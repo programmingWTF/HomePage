@@ -6,52 +6,79 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.3f6ef419401cd87aaa45c49b2ac682d8fab1c3e72b020c0bf71e9f563e840a8d.css">
+    <link rel="stylesheet" href="/css/main.min.31240e29fce449a9a1cef1263a2c53e786e2038a89a1cc32101993e9775e9304.css">
 </head>
 <body>
     
 <div id="overlay" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px;">
     
-    <h1 style="margin-bottom: 1rem;">
-         标签：Categories 
-    </h1>
+    <h1 style="margin-bottom: 1rem;">文章列表</h1>
     
-    <div class="tag-cloud-container" style="margin-bottom: 2.5rem;">
-         
-            
-            <a href="/tags/c&#43;&#43;/" class="tag-combo" 
-               style="">
+    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 2.5rem;">
+        
+            <div class="tag-combo active" data-tag="c&#43;&#43;" style="cursor: pointer;">
                 <span class="t-name">c&#43;&#43;</span>
                 <span class="t-count">1</span>
-            </a>
-            
+            </div>
         
-            
-            <a href="/tags/nuaa/" class="tag-combo" 
-               style="">
+            <div class="tag-combo active" data-tag="nuaa" style="cursor: pointer;">
                 <span class="t-name">nuaa</span>
-                <span class="t-count">2</span>
-            </a>
-            
+                <span class="t-count">1</span>
+            </div>
         
-            
-            <a href="/tags/pcl/" class="tag-combo" 
-               style="">
+            <div class="tag-combo active" data-tag="pcl" style="cursor: pointer;">
                 <span class="t-name">pcl</span>
                 <span class="t-count">1</span>
-            </a>
-            
+            </div>
         
-            
-        
-            
+            <div class="tag-combo active" data-tag="算法" style="cursor: pointer;">
+                <span class="t-name">算法</span>
+                <span class="t-count">1</span>
+            </div>
         
     </div>
 
-    <div class="posts-container" style="max-height: 40vh; overflow-y: auto; padding: 1rem; text-align: left;">
+    <div class="posts-container" id="posts-list" style="max-height: 40vh; overflow-y: auto; padding: 1rem; text-align: left;">
         
     </div>
+
+    <div style="margin-top: 3rem;">
+        <a href="/" class="btn github-btn">← 返回首页</a>
+    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tags = document.querySelectorAll('#filter-tags .tag-combo');
+    const posts = document.querySelectorAll('#posts-list .post-item');
+
+    tags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            
+            tag.classList.toggle('active');
+            
+            
+            const activeTags = Array.from(document.querySelectorAll('#filter-tags .tag-combo.active'))
+                                   .map(t => t.dataset.tag);
+
+            
+            posts.forEach(post => {
+                const postTags = post.dataset.tags.split(' ');
+                
+                const isVisible = activeTags.some(t => postTags.includes(t));
+                
+                if (activeTags.length === 0) {
+                    post.style.display = 'none'; 
+                } else if (isVisible) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
