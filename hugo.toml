@@ -1,0 +1,16 @@
+baseURL = "https://liguiyu.tech"
+languageCode = "zh-cn"
+title = "liguiyu.tech"
+
+[params]
+    subtitle = "桂鱼的个人主页"
+    description = "寻找队友？如果你有任何计算机竞赛或有趣的项目邀约，欢迎随时联系。"
+    github = "programmingWTF"
+    qq = "3438322953"
+    wechat = "wxid_asr4h4rapit012"
+    email = "liguiyu242510209@nuaa.edu.cn"
+    removePathAccents = false
+    # 关键设置：禁止将路径强制转换为 ASCII
+    disablePathExternalEmptyDirs = true
+    # 允许 URL 中出现中文
+    hasCJKLanguage = true

@@ -1,0 +1,662 @@
+
+/* 基础样式重置 */
+body { 
+    margin: 0; 
+    background-color: #050505; /* 深色极简背景 */
+    color: #ffffff; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+.lock-scroll {
+    overflow: hidden;
+}
+canvas { 
+    display: block; 
+    /* 关键点：改为 fixed，这样无论页面怎么滚动，星空都固定在屏幕上 */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* 确保它在所有内容的最下面 */
+    z-index: -1;
+}
+#post-container {
+    position: relative;
+    z-index: 9999; /* 提升优先级，确保内容在磨砂层之上 */
+    background: transparent;
+}
+#overlay { 
+    position: absolute; 
+    top: 42%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center; 
+    z-index: 1 !important;
+    width: 90%;
+    max-width: 800px;
+    padding: 3rem 2rem;
+    
+    /* 核心修改：给 overlay 一个最小高度，或者确保它是定位上下文 */
+    min-height: 80vh; /* 让容器至少占据 80% 的屏幕高度 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 让中间的内容保持居中 */
+}
+
+/* 修复：防止磨砂/模糊层遮挡文章标题 */
+.markdown-content {
+    position: relative;
+    z-index: 9998 !important; /* 略低于 post-，但高于 overlay */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+}
+
+/* 确保 overlay 在内容下方（若需要覆盖，可调整为更高值） */
+#overlay {
+    z-index: 1 !important;
+    /* 禁用任何模糊/滤镜，防止文字被模糊 */
+    filter: none !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* 渐变发光标题 */
+h1 { 
+    font-size: 4rem; 
+    margin-bottom: 0.5rem; 
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #7ee8fa, #a18cd1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glowText 2s infinite alternate;
+}
+
+@keyframes glowText {
+    0% { filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6)); }
+    100% { filter: drop-shadow(0 0 25px rgba(255, 0, 255, 0.6)); }
+}
+
+p.subtitle { 
+    font-size: 1.5rem; 
+    margin: 0.5rem 0; 
+    color: #d1d5db; 
+    font-weight: 300;
+}
+
+p.desc {
+    font-size: 1.1rem;
+    color: #9ca3af;
+    max-width: 600px;
+    margin: 1.5rem auto;
+    line-height: 1.6;
+}
+
+/* 标签流增强 */
+.tag, .tag a {
+    color: #ffffff !important; /* 强制白色 */
+    text-decoration: none;    /* 去掉下划线 */
+}
+.tags { 
+    margin-top: 1.5rem; 
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.tag:visited, .tag a:visited {
+    color: #ffffff !important;
+}
+.tag:hover {
+    color: #00ffff !important; /* 悬停时变回青色，呼应星空 */
+    background: rgba(0, 255, 255, 0.2);
+}
+.tag { 
+    padding: 8px 18px; 
+    border: 1px solid rgba(0, 255, 255, 0.3); 
+    border-radius: 20px; 
+    font-size: 0.95rem; 
+    background: rgba(0, 255, 255, 0.05); 
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.tag:hover {
+    background: rgba(0, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.8);
+}
+
+/* === 联系方式区 === */
+.contact-box {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.contact-title {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.btn {
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+.email-btn {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+    border-color: rgba(89, 131, 252, 0.5);
+    box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+}
+.github-btn {
+    background: linear-gradient(45deg, #24292e, #1b1e23);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+.qq-btn {
+    background: linear-gradient(45deg, #12B7F5, #0099ee);
+    border-color: rgba(18, 183, 245, 0.5);
+    box-shadow: 0 4px 15px rgba(18, 183, 245, 0.3);
+}
+.btn:hover {
+    transform: scale(1.05) translateY(-3px);
+    filter: brightness(1.1);
+}
+.email-btn:hover { box-shadow: 0 8px 25px rgba(89, 131, 252, 0.6); }
+.github-btn:hover { box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2); }
+.qq-btn:hover { box-shadow: 0 8px 25px rgba(18, 183, 245, 0.6); }
+.wechat-btn {
+    background: linear-gradient(45deg, #07c160, #0ab356);
+    border-color: rgba(7, 193, 96, 0.5);
+    box-shadow: 0 4px 15px rgba(7, 193, 96, 0.3);
+}
+.wechat-btn:hover { box-shadow: 0 8px 25px rgba(7, 193, 96, 0.6); }
+
+
+/* 1. 全局正文优化 */
+.markdown-content {
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* 修改：正文内一级标题 (# AGENTS.md) */
+.markdown-content h1 {
+    font-size: 1.5rem !important; /* 稍微调大一点，增强工作区标题感 */
+    margin-top: 4rem;
+    margin-bottom: 1.8rem;
+    padding: 12px 24px;
+    position: relative;
+    display: block;
+    
+    /* --- 去掉流动效果，改为纯净白色 --- */
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    color: #ffffff !important; 
+    
+    /* 给予非常轻微的文字阴影，增加清晰度 */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+}
+
+/* 增强：标题下的模糊背景与左侧紫色竖线 */
+.markdown-content h1::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* 极淡的底色，增加磨砂感厚度 */
+    background: linear-gradient(90deg, 
+        rgba(138, 43, 226, 0.1) 0%, 
+        rgba(255, 255, 255, 0.02) 50%, 
+        transparent 100%
+    ); 
+    
+    border-left: 6px solid #8a2be2; /* 标志性的紫色竖线 */
+    backdrop-filter: blur(12px);    /* 核心：模糊效果 */
+    -webkit-backdrop-filter: blur(12px);
+    
+    z-index: -1;
+    border-radius: 0 4px 4px 0;
+    
+    /* 遮罩：让背景向右自然消失，不生硬 */
+    mask-image: linear-gradient(to right, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 60%, transparent 100%);
+}
+
+/* 优化：二级标题 (##) 的边距和颜色，拉开层次 */
+.markdown-content h2 {
+    font-size: 1.6rem !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    margin-top: 3.5rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+}
+
+/* 优化：代码块 (Code Blocks) 的渲染细节 */
+.markdown-content pre {
+    background: rgba(30, 30, 35, 0.4) !important; /* 稍微加深背景 */
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(126, 232, 250, 0.15); /* 淡淡的青色边框 */
+    border-left: 4px solid #7ee8fa; 
+    padding: 1.8rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* 优化：代码块内滚动条样式（更极简） */
+.markdown-content pre::-webkit-scrollbar {
+    height: 4px;
+}
+.markdown-content pre::-webkit-scrollbar-thumb {
+    background: rgba(126, 232, 250, 0.3);
+    border-radius: 10px;
+}
+
+/* 4. 三级标题 (### 核心身份) */
+.markdown-content h3 {
+    font-size: 1.2rem !important;
+    color: #c67cff !important;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+}
+.markdown-content h3::before {
+    content: "◇";
+    margin-right: 8px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* 5. 代码块渲染 (Code Blocks) */
+.markdown-content pre {
+    background: rgba(15, 15, 15, 0.6) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid #7ee8fa; /* 代码块左侧青色条 */
+    padding: 1.5rem;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.markdown-content code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.95rem;
+    color: #e0e0e0;
+}
+
+/* 行内代码 */
+.markdown-content p code {
+    background: rgba(126, 232, 250, 0.15);
+    color: #7ee8fa;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* 6. 列表与引用 */
+.markdown-content ul, .markdown-content ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.markdown-content li {
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content blockquote {
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 4px solid rgba(255, 255, 255, 0.2);
+    font-style: italic;
+    color: #9ca3af;
+}
+
+/* 7. 响应式页边距调整 */
+@media (max-width: 768px) {
+    .markdown-content {
+        padding: 0 1.2rem;
+    }
+    #post- > h1 {
+        font-size: 2.4rem !important;
+    }
+}
+/* ================================================================
+   标签系统 (Tags System) - 包含首页恒亮与列表页过滤逻辑
+   ================================================================ */
+
+/* 1. 基础容器 */
+.tag-cloud- {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin: 1.5rem auto;
+    max-width: 90%;
+}
+
+/* 2. 标签主体 (胶囊外壳) */
+.tag-combo {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 8px 5px 16px; /* 左侧文字留白多，右侧圆圈留白少 */
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    border-radius: 30px;
+    text-decoration: none;
+    background: rgba(0, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 10px;
+    cursor: pointer;
+    opacity: 1;
+}
+
+/* 标签文字 */
+.tag-combo .t-name {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* 3. 核心修复：正圆数字标签 */
+.tag-combo .t-count {
+    /* 强制宽高相等 */
+    width: 24px;
+    height: 24px;
+    /* 核心：防止 flex 布局下被文字挤压 */
+    flex: 0 0 24px; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: #00ffff;
+    color: #050505;
+    border-radius: 50%; /* 变成正圆 */
+    font-size: 0.75rem;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0; /* 必须为0，防止内边距撑开成椭圆 */
+    transition: all 0.3s ease;
+}
+
+/* 4. 悬停交互 (通用) */
+.tag-combo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    border-color: #00ffff;
+}
+
+/* ================================================================
+   列表页专用：过滤逻辑 (.filterable 容器下生效)
+   ================================================================ */
+
+/* 未选中状态：白色系，半透明 */
+.filterable .tag-combo {
+    opacity: 0.7;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.filterable .tag-combo .t-name {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.filterable .tag-combo .t-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* 选中状态 (Active)：恢复青色发光 */
+.filterable .tag-combo.active {
+    opacity: 1;
+    background: rgba(0, 255, 255, 0.1);
+    border-color: #00ffff;
+}
+
+.filterable .tag-combo.active .t-count {
+    background: #00ffff;
+    color: #050505;
+}
+
+.filterable .tag-combo.active:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+}
+/* === 恢复高级感页脚样式 === */
+.footer-text {
+    /* 改为 fixed，直接相对于浏览器窗口定位，这样它永远在最下面 */
+    position: fixed; 
+    bottom: 30px; /* 距离窗口底部 30 像素 */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    color: rgba(255, 255, 255, 0.25); /* 调得更暗一点，增加高级感 */
+    font-family: "Optima", "Candara", "Segoe UI", sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 3px; /* 字间距再拉大一点 */
+    text-transform: uppercase;
+    
+    z-index: 100; /* 确保不被任何东西遮挡 */
+    white-space: nowrap; /* 防止换行 */
+}
+
+/* 如果在手机端，稍微调高一点点防止被系统条遮挡 */
+@media (max-width: 768px) {
+    .footer-text {
+        bottom: 1.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+.hero-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 40px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #00ffff;
+    border-radius: 50px;
+    color: #00ffff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.hero-btn .icon { margin-right: 10px; font-size: 1.4rem; }
+
+.hero-btn:hover {
+    background: #00ffff;
+    color: #050505;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
+}
+
+/* 呼吸灯扫光特效 */
+.hero-btn .light {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: 0.5s;
+}
+
+.hero-btn:hover .light {
+    left: 100%;
+    transition: 0.7s;
+}
+/* ================================================================
+   方案二 (绝对居中 & 完美裁切版)：右侧悬浮“动力学传送门”
+   ================================================================ */
+
+.side-portal {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    
+    display: block;
+    width: 85px;       /* 宽度适中，既有存在感又不笨重 */
+    height: 320px;     /* 高度修长 */
+    
+    background: rgba(10, 10, 10, 0.5); 
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-right: none;
+    border-left: 4px solid #00ffff;
+    border-radius: 20px 0 0 20px; /* 左侧圆角 */
+    
+    /* 核心修复 1：严格裁切！防止底部光影变成难看的直角溢出 */
+    overflow: hidden; 
+    
+    text-decoration: none;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: -5px 0 25px rgba(0, 255, 255, 0.15);
+}
+
+/* 核心修复 2：完美 Flex 居中比例布局 */
+.side-portal .portal-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    /* column-reverse 魔法：自动把后面的文字排在火箭上方！ */
+    flex-direction: column-reverse; 
+    align-items: center;
+    justify-content: center; /* 让文字和火箭整体在面板正中间 */
+    gap: 25px; /* 文字和火箭之间的完美呼吸间距 */
+    z-index: 2; /* 确保内容在光影上面 */
+}
+
+/* 底层网格装饰 */
+.side-portal::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 10px 10px;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+/* 1. 图标样式 */
+.side-portal .portal-icon {
+    font-size: 2.2rem;
+    color: #00ffff;
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1));
+    animation: icon-float 3s ease-in-out infinite;
+    transition: all 0.4s ease;
+}
+
+@keyframes icon-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* 2. 竖排文字样式 (不再用绝对定位，自然流排版) */
+.side-portal .portal-text {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-family: 'Fira Code', monospace;
+    font-weight: 800;
+    letter-spacing: 8px;
+    writing-mode: vertical-rl;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    transition: all 0.4s ease;
+}
+
+/* 3. 动力学重构核心：流体能量堆 */
+.side-portal .portal-light {
+    position: absolute;
+    width: 100%;
+    height: 30px; /* 常驻时底部只有一小团光，不会漏出去 */
+    background: linear-gradient(0deg, rgba(0, 255, 255, 0.4) 0%, transparent 100%);
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+    transition: height 0.6s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+}
+
+/* ================================================================
+   交互状态：完全激活 (传送门开启)
+   ================================================================ */
+
+.side-portal:hover {
+    width: 130px; /* 悬停拉宽 */
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: -15px 0 50px rgba(0, 255, 255, 0.4);
+    border-left-width: 8px; /* 能量条加粗 */
+}
+
+.side-portal:hover .portal-text {
+    letter-spacing: 12px;
+    text-shadow: 0 0 25px #00ffff;
+    animation: text-glitch 0.4s linear infinite alternate;
+}
+
+@keyframes text-glitch {
+    0% { transform: translate(0); text-shadow: 2px 0 red, -2px 0 blue; }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(-1px, -1px); }
+    60% { transform: translate(1px, 1px); }
+    80% { transform: translate(1px, -1px); }
+    100% { transform: translate(0); text-shadow: -2px 0 red, 2px 0 blue; }
+}
+
+.side-portal:hover .portal-icon {
+    transform: scale(1.3) rotate(-5deg);
+    filter: drop-shadow(0 0 30px #00ffff);
+}
+
+.side-portal:hover .portal-light {
+    height: 100%; /* 光芒瞬间充满整个面板 */
+    background: linear-gradient(0deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 255, 255, 0.3) 50%, transparent 100%);
+    animation: fluid-scan 1s linear;
+}
+
+@keyframes fluid-scan {
+    0% { background-position: bottom; }
+    100% { background-position: top; }
+}

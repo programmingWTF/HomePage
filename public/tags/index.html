@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liguiyu.tech</title>
+    
+    
+    <link rel="stylesheet" href="/css/main.min.31240e29fce449a9a1cef1263a2c53e786e2038a89a1cc32101993e9775e9304.css">
+</head>
+<body>
+    
+<div id="overlay" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px;">
+    
+    <h1 style="margin-bottom: 1rem;">文章列表</h1>
+    
+    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 2.5rem;">
+        
+            <div class="tag-combo active" data-tag="c&#43;&#43;" style="cursor: pointer;">
+                <span class="t-name">c&#43;&#43;</span>
+                <span class="t-count">1</span>
+            </div>
+        
+            <div class="tag-combo active" data-tag="nuaa" style="cursor: pointer;">
+                <span class="t-name">nuaa</span>
+                <span class="t-count">1</span>
+            </div>
+        
+            <div class="tag-combo active" data-tag="pcl" style="cursor: pointer;">
+                <span class="t-name">pcl</span>
+                <span class="t-count">1</span>
+            </div>
+        
+            <div class="tag-combo active" data-tag="算法" style="cursor: pointer;">
+                <span class="t-name">算法</span>
+                <span class="t-count">1</span>
+            </div>
+        
+    </div>
+
+    <div class="posts-container" id="posts-list" style="max-height: 40vh; overflow-y: auto; padding: 1rem; text-align: left;">
+        
+            <div class="post-item" 
+                 data-tags="" 
+                 style="margin-bottom: 20px; border-bottom: 1px solid rgba(0,255,255,0.1); padding-bottom: 10px; display: block;">
+                <a href="/tags/c&#43;&#43;/" style="color: #00ffff; font-size: 1.4rem; text-decoration: none; display: block; margin-bottom: 5px;">
+                    C&#43;&#43;
+                </a>
+                <span style="color: #9ca3af; font-size: 0.9rem;">📅 2026-03-31</span>
+                <div style="margin-top: 5px;">
+                    
+                </div>
+            </div>
+        
+            <div class="post-item" 
+                 data-tags="" 
+                 style="margin-bottom: 20px; border-bottom: 1px solid rgba(0,255,255,0.1); padding-bottom: 10px; display: block;">
+                <a href="/tags/nuaa/" style="color: #00ffff; font-size: 1.4rem; text-decoration: none; display: block; margin-bottom: 5px;">
+                    NUAA
+                </a>
+                <span style="color: #9ca3af; font-size: 0.9rem;">📅 2026-03-31</span>
+                <div style="margin-top: 5px;">
+                    
+                </div>
+            </div>
+        
+            <div class="post-item" 
+                 data-tags="" 
+                 style="margin-bottom: 20px; border-bottom: 1px solid rgba(0,255,255,0.1); padding-bottom: 10px; display: block;">
+                <a href="/tags/pcl/" style="color: #00ffff; font-size: 1.4rem; text-decoration: none; display: block; margin-bottom: 5px;">
+                    PCL
+                </a>
+                <span style="color: #9ca3af; font-size: 0.9rem;">📅 2026-03-31</span>
+                <div style="margin-top: 5px;">
+                    
+                </div>
+            </div>
+        
+            <div class="post-item" 
+                 data-tags="" 
+                 style="margin-bottom: 20px; border-bottom: 1px solid rgba(0,255,255,0.1); padding-bottom: 10px; display: block;">
+                <a href="/tags/%E7%AE%97%E6%B3%95/" style="color: #00ffff; font-size: 1.4rem; text-decoration: none; display: block; margin-bottom: 5px;">
+                    算法
+                </a>
+                <span style="color: #9ca3af; font-size: 0.9rem;">📅 2026-03-31</span>
+                <div style="margin-top: 5px;">
+                    
+                </div>
+            </div>
+        
+            <div class="post-item" 
+                 data-tags="" 
+                 style="margin-bottom: 20px; border-bottom: 1px solid rgba(0,255,255,0.1); padding-bottom: 10px; display: block;">
+                <a href="/tags/%E4%BD%A0%E5%A5%BD/" style="color: #00ffff; font-size: 1.4rem; text-decoration: none; display: block; margin-bottom: 5px;">
+                    你好
+                </a>
+                <span style="color: #9ca3af; font-size: 0.9rem;">📅 0001-01-01</span>
+                <div style="margin-top: 5px;">
+                    
+                </div>
+            </div>
+        
+    </div>
+
+    <div style="margin-top: 3rem;">
+        <a href="/" class="btn github-btn">← 返回首页</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tags = document.querySelectorAll('#filter-tags .tag-combo');
+    const posts = document.querySelectorAll('#posts-list .post-item');
+
+    tags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            
+            tag.classList.toggle('active');
+            
+            
+            const activeTags = Array.from(document.querySelectorAll('#filter-tags .tag-combo.active'))
+                                   .map(t => t.dataset.tag);
+
+            
+            posts.forEach(post => {
+                const postTags = post.dataset.tags.split(' ');
+                
+                const isVisible = activeTags.some(t => postTags.includes(t));
+                
+                if (activeTags.length === 0) {
+                    post.style.display = 'none'; 
+                } else if (isVisible) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    
+    <script src="/js/starfield.min.4759d59640df87fcae59f663cc10016a758458d2b71d58ed1da93a366ad1fd7a.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{{ define "main" }}
+<div id="post-container" style="position: relative; z-index: 2; padding: 60px 10% 100px 10%; max-width: 900px; margin: 0 auto;">
+    
+    <div style="margin-bottom: 2rem;">
+        <a href="/posts/" style="color: #9ca3af; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;" onmouseover="this.style.color='#00ffff'" onmouseout="this.style.color='#9ca3af'">
+            ← 返回文章列表
+        </a>
+    </div>
+
+    <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        {{ .Title }}
+    </h1>
+
+    <div class="post-tags" style="margin: 1rem 0 2rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+        {{ range .Params.tags }}
+            {{ $tagPage := $.Site.GetPage (printf "/tags/%s" (. | urlize)) }}
+            <a href="{{ $tagPage.RelPermalink }}" class="tag" style="text-decoration: none; font-size: 0.8rem;">
+                # {{ . }}
+            </a>
+        {{ end }}
+    </div>
+
+    <div class="post-meta" style="color: #9ca3af; margin: 1rem 0 3rem 0; font-size: 0.9rem;">
+        发布于: {{ .Date.Format "2006-01-02" }}
+    </div>
+    
+    <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
+        {{ .Content }}
+    </article>
+
+    <div style="margin-top: 5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+        <a href="/posts/" class="btn github-btn">← 返回列表</a>
+    </div>
+</div>
+{{ end }}

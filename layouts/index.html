@@ -1,0 +1,41 @@
+{{ define "main" }}
+<script>
+    // 仅在首页执行，锁定滚动
+    document.body.classList.add('lock-scroll');
+</script>
+
+<div id="overlay">
+    <h1>{{ .Site.Title }}</h1>
+    
+    <p class="subtitle">{{ .Site.Params.subtitle }}</p>
+    <p class="desc">{{ .Site.Params.description }}</p>
+    
+    <div class="tags" style="opacity: 0.7; transform: scale(0.9); margin-top: 2rem;">
+        <span class="tag">☕ 咖啡因驱动</span>
+        <span class="tag">🌌 科幻爱好者</span>
+        <span class="tag">🎮 单机游戏玩家</span>
+        <span class="tag">🏃‍♂️ 随缘健身中</span>
+        <span class="tag">🦉 熬夜选手</span>
+    </div>
+
+    <div class="contact-box">
+        <div class="contact-title">— Let's Connect —</div>
+        <div class="contact-links">
+            <a href="https://github.com/{{ .Site.Params.github }}" target="_blank" class="btn github-btn">🐙 GitHub</a>
+            <a href="javascript:alert('QQ: {{ .Site.Params.qq }}')" class="btn qq-btn">🐧 QQ</a>
+            <a href="javascript:alert('微信: wxid_asr4h4rapit012 (备注来意)')" class="btn wechat-btn">💬 微信</a>
+            <a href="javascript:alert('Email: {{ .Site.Params.email }}')" class="btn email-btn">✉ Email</a>
+        </div>
+    </div>
+
+    <div class="footer-text">Artificial Intelligence @ NUAA</div>
+</div>
+
+<a href="/posts/" class="side-portal">
+    <div class="portal-inner">
+        <span class="portal-icon">🚀</span>
+        <span class="portal-text">博文库</span>
+        <span class="portal-light"></span>
+    </div>
+</a>
+{{ end }}
