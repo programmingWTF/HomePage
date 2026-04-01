@@ -7,6 +7,33 @@
     
     
     <link rel="stylesheet" href="/css/main.min.94f8ea0d12a2e71d66ab1133bf57f76a3a951a350c044b518830c8e2d88d9df0.css">
+    
+    <style>
+         
+         
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #050505;
+            z-index: 999999;
+            pointer-events: none;
+            animation: pageReveal 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes pageReveal {
+            0% { opacity: 1; backdrop-filter: blur(10px); }
+            100% { opacity: 0; backdrop-filter: blur(0px); visibility: hidden; }
+        }
+         
+        body.page-fade-out::after {
+            visibility: visible;
+            animation: pageHide 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
+        }
+        @keyframes pageHide {
+            0% { opacity: 0; backdrop-filter: blur(0px); }
+            100% { opacity: 1; backdrop-filter: blur(10px); }
+        }
+    </style>
 </head>
 <body>
     
@@ -24,15 +51,16 @@
 }
 .post-item.hidden-post {
     opacity: 0;
-    transform: translateY(15px) scale(0.98);
+    transform: scale(0.98);
     max-height: 0;
     margin-bottom: 0;
     padding-bottom: 0;
     border-bottom-color: transparent;
     border-bottom-width: 0;
+    pointer-events: none;  
 }
 </style>
-<div id="overlay" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px;">
+<div id="overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto;">
     
     <h1 style="margin-bottom: 1rem;">文章列表</h1>
     
@@ -54,11 +82,6 @@
                 <span class="t-count">1</span>
             </div>
         
-            <div class="tag-combo active" data-tag="hugo" style="cursor: pointer;">
-                <span class="t-name">hugo</span>
-                <span class="t-count">1</span>
-            </div>
-        
             <div class="tag-combo active" data-tag="nuaa" style="cursor: pointer;">
                 <span class="t-name">nuaa</span>
                 <span class="t-count">1</span>
@@ -69,23 +92,8 @@
                 <span class="t-count">1</span>
             </div>
         
-            <div class="tag-combo active" data-tag="test" style="cursor: pointer;">
-                <span class="t-name">test</span>
-                <span class="t-count">1</span>
-            </div>
-        
-            <div class="tag-combo active" data-tag="ui" style="cursor: pointer;">
-                <span class="t-name">ui</span>
-                <span class="t-count">1</span>
-            </div>
-        
             <div class="tag-combo active" data-tag="技术分享" style="cursor: pointer;">
                 <span class="t-name">技术分享</span>
-                <span class="t-count">1</span>
-            </div>
-        
-            <div class="tag-combo active" data-tag="测试" style="cursor: pointer;">
-                <span class="t-name">测试</span>
                 <span class="t-count">1</span>
             </div>
         
@@ -244,6 +252,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    
+                    if (this.hostname === window.location.hostname && 
+                        this.target !== '_blank' && 
+                        !this.hasAttribute('download') && 
+                        !this.getAttribute('href').startsWith('#') &&
+                        !this.href.includes('#')) {
+                        
+                        e.preventDefault(); 
+                        
+                        
+                        document.body.classList.add('page-fade-out');
+                        
+                        
+                        setTimeout(() => {
+                            window.location.href = this.href;
+                        }, 350);
+                    }
+                });
+            });
+        });
+    </script>
     
     
     <script src="/js/starfield.min.37d83ae315256b65208b632d945a202ca9075f9508f609822645ba241ea22c13.js"></script>

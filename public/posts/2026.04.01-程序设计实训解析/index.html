@@ -6,7 +6,7 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.94f8ea0d12a2e71d66ab1133bf57f76a3a951a350c044b518830c8e2d88d9df0.css">
+    <link rel="stylesheet" href="/css/main.min.18c6ce22b0b125e694a31700a57a4e3d40836adbed768f65c99d55e3d31918e2.css">
     
     <style>
          
@@ -1005,6 +1005,38 @@ document.addEventListener('DOMContentLoaded', function() {
         wrapper.className = 'code-wrapper';
         
         pre.parentNode.insertBefore(wrapper, pre);
+        
+        
+        
+        const codeElement = pre.querySelector('code');
+        
+        const codeText = (codeElement ? codeElement.textContent : pre.textContent).replace(/\n$/, '');
+        const lines = codeText.split('\n');
+        let lineCount = lines.length; 
+        
+        const lineNumbersHTML = Array.from({ length: lineCount }, (_, i) => i + 1).join('\n');
+        
+        const lineNumbersDiv = document.createElement('div');
+        lineNumbersDiv.className = 'pre-line-numbers';
+        
+        lineNumbersDiv.style.whiteSpace = 'pre';
+        lineNumbersDiv.innerText = lineNumbersHTML;
+        
+        const codeContentDiv = document.createElement('div');
+        codeContentDiv.className = 'pre-code-content';
+        
+        codeContentDiv.style.whiteSpace = 'pre';
+        
+        
+        while (pre.firstChild) {
+            codeContentDiv.appendChild(pre.firstChild);
+        }
+        
+        
+        pre.appendChild(lineNumbersDiv);
+        pre.appendChild(codeContentDiv);
+        
+        
         wrapper.appendChild(pre);
         pre.style.margin = '0'; 
         
@@ -1013,10 +1045,7 @@ document.addEventListener('DOMContentLoaded', function() {
         copyBtn.innerHTML = '📋 复制';
         
         copyBtn.addEventListener('click', function() {
-            const codeFragment = pre.querySelector('code');
-            const pContent = codeFragment ? codeFragment.innerText : pre.innerText;
-            
-            navigator.clipboard.writeText(pContent).then(function() {
+            navigator.clipboard.writeText(codeText).then(function() {
                 const originalText = copyBtn.innerHTML;
                 copyBtn.innerHTML = '✨ 已复制!';
                 copyBtn.classList.add('copied');
@@ -1037,6 +1066,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const tocLinks = document.querySelectorAll('#TableOfContents a');
     const headers = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3');
     const tocInner = document.querySelector('.toc-inner');
+    window.isTOCScrolling = false;
+    let tocScrollTimer = null;
+
+    
+    tocLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            window.isTOCScrolling = true;
+            if (tocScrollTimer) clearTimeout(tocScrollTimer);
+            
+            
+            tocScrollTimer = setTimeout(() => {
+                window.isTOCScrolling = false;
+            }, 1000); 
+        });
+    });
 
     
     const backToTopBtn = document.getElementById('back-to-top');
@@ -1062,8 +1106,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     link.classList.add('active');
                     
                     
-                    if (tocInner) {
-                        
+                    
+                    if (tocInner && !window.isTOCScrolling) {
                         const tocRect = tocInner.getBoundingClientRect();
                         const linkRect = link.getBoundingClientRect();
                         

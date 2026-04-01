@@ -92,6 +92,38 @@ document.addEventListener('DOMContentLoaded', function() {
         wrapper.className = 'code-wrapper';
         
         pre.parentNode.insertBefore(wrapper, pre);
+        
+        // --- 开始：行号改造 --- 
+        // 生成行号并分离原代码
+        const codeElement = pre.querySelector('code');
+        // 使用 textContent 保证内容纯净，并预处理末尾换行
+        const codeText = (codeElement ? codeElement.textContent : pre.textContent).replace(/\n$/, '');
+        const lines = codeText.split('\n');
+        let lineCount = lines.length; 
+        
+        const lineNumbersHTML = Array.from({ length: lineCount }, (_, i) => i + 1).join('\n');
+        
+        const lineNumbersDiv = document.createElement('div');
+        lineNumbersDiv.className = 'pre-line-numbers';
+        // 关键修复：使用 white-space 保持换行
+        lineNumbersDiv.style.whiteSpace = 'pre';
+        lineNumbersDiv.innerText = lineNumbersHTML;
+        
+        const codeContentDiv = document.createElement('div');
+        codeContentDiv.className = 'pre-code-content';
+        // 关键修复：确保代码文本层也强制使用 pre 换行逻辑，防止合并
+        codeContentDiv.style.whiteSpace = 'pre';
+        
+        // 将原先 pre 内部的子节点全部移入新建的 codeContentDiv 内
+        while (pre.firstChild) {
+            codeContentDiv.appendChild(pre.firstChild);
+        }
+        
+        // 重新排布 pre 内存
+        pre.appendChild(lineNumbersDiv);
+        pre.appendChild(codeContentDiv);
+        // --- 结束：行号改造 ---
+        
         wrapper.appendChild(pre);
         pre.style.margin = '0'; // 移除旧的上下边距，因为给了 wrapper
         
@@ -100,10 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         copyBtn.innerHTML = '📋 复制';
         
         copyBtn.addEventListener('click', function() {
-            const codeFragment = pre.querySelector('code');
-            const pContent = codeFragment ? codeFragment.innerText : pre.innerText;
-            
-            navigator.clipboard.writeText(pContent).then(function() {
+            navigator.clipboard.writeText(codeText).then(function() {
                 const originalText = copyBtn.innerHTML;
                 copyBtn.innerHTML = '✨ 已复制!';
                 copyBtn.classList.add('copied');
@@ -124,6 +153,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const tocLinks = document.querySelectorAll('#TableOfContents a');
     const headers = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3');
     const tocInner = document.querySelector('.toc-inner');
+    window.isTOCScrolling = false;
+    let tocScrollTimer = null;
+
+    // 拦截 TOC 点击，解决长文章跳转时的“鬼畜”回弹问题
+    tocLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            window.isTOCScrolling = true;
+            if (tocScrollTimer) clearTimeout(tocScrollTimer);
+            
+            // 设定一个较长的锁定周期，确保页面平滑滚动完成后再解锁 TOC 的自动平衡
+            tocScrollTimer = setTimeout(() => {
+                window.isTOCScrolling = false;
+            }, 1000); 
+        });
+    });
 
     // 页面滚动与进度条逻辑
     const backToTopBtn = document.getElementById('back-to-top');
@@ -149,8 +193,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     link.classList.add('active');
                     
                     // 让 TOC 容器内的当前高亮项自动滚动到中心视野
-                    if (tocInner) {
-                        // 记录用户是否正在手动操作目录逻辑
+                    // 增加判断：如果当前正处于目录跳转引发的滚动中，不强制纠正 TOC 内部偏移
+                    if (tocInner && !window.isTOCScrolling) {
                         const tocRect = tocInner.getBoundingClientRect();
                         const linkRect = link.getBoundingClientRect();
                         // 计算元素相对于内层滚动容器的绝对高度
