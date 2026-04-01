@@ -1,38 +1,74 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.3dd5bb17554e61fd1ec3abbaeb41e28b251ae787e23c7633298c2e4f9c9be576.css">
+    <link rel="stylesheet" href="/css/main.min.b4e9603654896f7041ec2fe955e51b95a4798d0f54a5407886207320d78565da.css">
 </head>
 <body>
     
+<style>
+.post-item {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 150px;  
+    overflow: hidden;
+    margin-bottom: 12px; 
+    border-bottom: 1px solid rgba(0,255,255,0.1); 
+    padding-bottom: 8px; 
+    display: block;
+}
+.post-item.hidden-post {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom-color: transparent;
+}
+</style>
 <div id="overlay" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px;">
     
     <h1 style="margin-bottom: 1rem;">文章列表</h1>
     
     <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 2.5rem;">
         
-            <div class="tag-combo active" data-tag="hugo" style="cursor: pointer;">
-                <span class="t-name">hugo</span>
+            <div class="tag-combo active" data-tag="c&#43;&#43;" style="cursor: pointer;">
+                <span class="t-name">c&#43;&#43;</span>
                 <span class="t-count">1</span>
             </div>
         
-            <div class="tag-combo active" data-tag="ui" style="cursor: pointer;">
-                <span class="t-name">ui</span>
+            <div class="tag-combo active" data-tag="c/c&#43;&#43;" style="cursor: pointer;">
+                <span class="t-name">c/c&#43;&#43;</span>
                 <span class="t-count">1</span>
             </div>
         
-            <div class="tag-combo active" data-tag="测试" style="cursor: pointer;">
-                <span class="t-name">测试</span>
+            <div class="tag-combo active" data-tag="nuaa" style="cursor: pointer;">
+                <span class="t-name">nuaa</span>
                 <span class="t-count">1</span>
             </div>
         
-            <div class="tag-combo active" data-tag="赛博朋克" style="cursor: pointer;">
-                <span class="t-name">赛博朋克</span>
+            <div class="tag-combo active" data-tag="stl" style="cursor: pointer;">
+                <span class="t-name">stl</span>
+                <span class="t-count">1</span>
+            </div>
+        
+            <div class="tag-combo active" data-tag="算法竞赛" style="cursor: pointer;">
+                <span class="t-name">算法竞赛</span>
+                <span class="t-count">1</span>
+            </div>
+        
+            <div class="tag-combo active" data-tag="编程" style="cursor: pointer;">
+                <span class="t-name">编程</span>
+                <span class="t-count">1</span>
+            </div>
+        
+            <div class="tag-combo active" data-tag="题目解析" style="cursor: pointer;">
+                <span class="t-name">题目解析</span>
                 <span class="t-count">1</span>
             </div>
         
@@ -61,11 +97,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const isVisible = activeTags.some(t => postTags.includes(t));
             
             if (activeTags.length === 0) {
-                post.style.display = 'none'; 
+                post.classList.add('hidden-post'); 
             } else if (isVisible) {
-                post.style.display = 'block';
+                post.classList.remove('hidden-post');
             } else {
-                post.style.display = 'none';
+                post.classList.add('hidden-post');
             }
         });
     }

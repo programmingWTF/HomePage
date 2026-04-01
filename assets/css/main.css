@@ -244,14 +244,14 @@ p.desc {
     position: relative;
     display: block;
     
-    /* --- 去掉流动效果，改为纯净白色 --- */
+    /* --- 柔和标题色，不再是刺眼的纯白 --- */
     background: none !important;
     -webkit-background-clip: initial !important;
     -webkit-text-fill-color: initial !important;
-    color: #ffffff !important; 
+    color: #e2e8f0 !important; 
     
-    /* 给予非常轻微的文字阴影，增加清晰度 */
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    /* 给予非常轻微的淡紫色文字阴影，增加层次和清晰度 */
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
     z-index: 1;
     letter-spacing: -0.5px;
     font-weight: 700;
@@ -288,7 +288,7 @@ p.desc {
 /* 优化：二级标题 (##) 的边距和颜色，拉开层次 */
 .markdown-content h2 {
     font-size: 1.6rem !important;
-    color: rgba(255, 255, 255, 0.95) !important;
+    color: #cbd5e1 !important; /* 柔和的银灰色，更有科技感 */
     margin-top: 3.5rem;
     margin-bottom: 1.2rem;
     padding-bottom: 10px;
@@ -320,7 +320,7 @@ p.desc {
 /* 4. 三级标题 (### 核心身份) */
 .markdown-content h3 {
     font-size: 1.2rem !important;
-    color: #c67cff !important;
+    color: #d8b4fe !important; /* 更柔和淡雅的紫色 */
     margin-top: 2.2rem;
     margin-bottom: 0.8rem;
     display: flex;
@@ -388,8 +388,80 @@ p.desc {
     color: #e0e0e0;
 }
 
+/* === 模拟 VSCode C/C++ 配色方案 === */
+/* 关键字: if, else, for, return, int, float, void 等 */
+.markdown-content .highlight .k, 
+.markdown-content .highlight .kd, 
+.markdown-content .highlight .kn, 
+.markdown-content .highlight .kp, 
+.markdown-content .highlight .kr, 
+.markdown-content .highlight .kt {
+    color: #4986CC !important;
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* 字符串 */
+.markdown-content .highlight .s, 
+.markdown-content .highlight .s1, 
+.markdown-content .highlight .s2, 
+.markdown-content .highlight .sb, 
+.markdown-content .highlight .sc, 
+.markdown-content .highlight .sd, 
+.markdown-content .highlight .si {
+    color: #25C13F !important;
+}
+
+/* 转义序列: \n, \t */
+.markdown-content .highlight .se {
+    color: #CF8E6D !important;
+}
+
+/* 数字 */
+.markdown-content .highlight .m, 
+.markdown-content .highlight .mf, 
+.markdown-content .highlight .mh, 
+.markdown-content .highlight .mi, 
+.markdown-content .highlight .mo, 
+.markdown-content .highlight .il {
+    color: #A21EBA !important;
+    font-weight: bold;
+}
+
+/* 函数名: 声明与调用 */
+.markdown-content .highlight .nf, 
+.markdown-content .highlight .fm {
+    color: #00D0FF !important;
+}
+
+/* 注释 */
+.markdown-content .highlight .c, 
+.markdown-content .highlight .c1, 
+.markdown-content .highlight .cm {
+    color: #6A9955 !important;
+    font-style: italic;
+}
+
+/* 预处理指令: #include, #define */
+.markdown-content .highlight .cp, 
+.markdown-content .highlight .cpf {
+    color: #C77DBB !important;
+}
+
+/* 常量与内置变量 */
+.markdown-content .highlight .kc, 
+.markdown-content .highlight .no {
+    color: #C77DBB !important;
+}
+
+/* 类名/类型名 */
+.markdown-content .highlight .nc {
+    color: #4EC9B0 !important;
+}
+
 /* 行内代码 */
-.markdown-content p code {
+.markdown-content p code, 
+.markdown-content li code {
     background: rgba(126, 232, 250, 0.15);
     color: #7ee8fa;
     padding: 2px 6px;
@@ -415,6 +487,68 @@ p.desc {
     font-style: italic;
     color: #9ca3af;
 }
+
+/* 表格样式：显示表格线并添加圆角 */
+.markdown-content table {
+    width: 100%;
+    border-collapse: separate; /* 允许圆角生效 */
+    border-spacing: 0;
+    border: 1px solid rgba(126, 232, 250, 0.18); /* 较明显的外框 */
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    margin: 1.2rem 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 6px 24px rgba(0,0,0,0.45);
+}
+
+.markdown-content th,
+.markdown-content td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12); /* 加粗横向网格线 */
+    border-right: 1px solid rgba(255, 255, 255, 0.06);  /* 加粗纵向网格线 */
+    color: rgba(255,255,255,0.95);
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+/* 交替行背景，增强网格感 */
+.markdown-content tr:nth-child(even) td {
+    background: rgba(126,232,250,0.01);
+}
+
+/* 悬停高亮整行，便于阅读 */
+.markdown-content tr:hover td {
+    background: rgba(126,232,250,0.02);
+}
+
+.markdown-content tr:last-child th,
+.markdown-content tr:last-child td {
+    border-bottom: none;
+}
+
+.markdown-content th {
+    background: rgba(126, 232, 250, 0.06);
+    font-weight: 700;
+    color: #e6f7ff;
+    border-bottom: 1px solid rgba(126,232,250,0.22); /* 表头下边框更明显 */
+}
+
+.markdown-content td:first-child,
+.markdown-content th:first-child {
+    border-left: none;
+}
+
+.markdown-content td:last-child,
+.markdown-content th:last-child {
+    border-right: none;
+}
+
+/* 圆角：为表格四个角单独设置，兼容不同浏览器渲染 */
+.markdown-content tr:first-child th:first-child { border-top-left-radius: 12px; }
+.markdown-content tr:first-child th:last-child { border-top-right-radius: 12px; }
+.markdown-content tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+.markdown-content tr:last-child td:last-child { border-bottom-right-radius: 12px; }
 
 /* 7. 响应式页边距调整 */
 @media (max-width: 768px) {
