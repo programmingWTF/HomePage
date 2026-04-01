@@ -29,7 +29,15 @@
         <span style="color: rgba(255,255,255,0.2);">|</span>
         <span>🔄 最近更新: {{ .Lastmod.Format "2006-01-02" }}</span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
-        <span>⏱️ 预计阅读: {{ .ReadingTime }} 分钟 (约 {{ .WordCount }} 字)</span>
+        {{ $words := .WordCount }}
+        {{ $readTime := (div $words 200) }}
+        {{ if gt (len (findRE "```" .RawContent)) 0 }}
+            {{ $readTime = (add $readTime (mul (len (findRE "```" .RawContent)) 1)) }}
+        {{ end }}
+        {{ if lt $readTime 1 }}
+            {{ $readTime = 1 }}
+        {{ end }}
+        <span>⏱️ 预计阅读: {{ $readTime }} 分钟 (约 {{ $words }} 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
