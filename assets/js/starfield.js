@@ -90,25 +90,22 @@ const animate = () => {
     updateParticles(particlesCyan, speedCyan);
     updateParticles(particlesMagenta, speedMagenta);
 
-    // 维持柔和的整体旋转感
-    particlesCyan.rotation.y = elapsedTime * 0.05;
-    particlesCyan.rotation.x = elapsedTime * 0.02;
+    // 维持柔和的整体旋转感 (移除原本会改变 Z 轴朝向的 rotation 累加)
+    // 之前使用 elapsedTime 直接赋值或 += 会导致局部坐标系转动，使得 Z 轴位移不再指向屏幕
     
-    particlesMagenta.rotation.y = elapsedTime * -0.03;
-    particlesMagenta.rotation.x = elapsedTime * -0.01;
-
-    // 依然响应鼠标轻微偏移
-    targetX = mouseX * 0.001;
-    targetY = mouseY * 0.001;
+    // 鼠标偏移影响 (修正移动方向：将原本的 targetX/Y 符号反转)
+    // 之前 targetX = mouseX * 0.0005 是正向跟随，但 camera.position.x += 会导致视口偏移使得物体向反方向运动
+    // 或者是相反。现在我们确保相机跟随鼠标方向移动，从而让背景粒子看起来像是朝鼠标方向偏移。
+    targetX = -mouseX * 0.0008; // 反转并微调灵敏度
+    targetY = mouseY * 0.0008;
     
-    particlesCyan.rotation.y += 0.5 * (targetX - particlesCyan.rotation.y);
-    particlesCyan.rotation.x += 0.5 * (targetY - particlesCyan.rotation.x);
-    
-    particlesMagenta.rotation.y += 0.3 * (targetX - particlesMagenta.rotation.y);
-    particlesMagenta.rotation.x += 0.3 * (targetY - particlesMagenta.rotation.x);
+    // 让相机位置随鼠标轻微晃动
+    camera.position.x += (targetX - camera.position.x) * 0.05;
+    camera.position.y += (targetY - camera.position.y) * 0.05;
+    camera.lookAt(scene.position);
 
     // 用扩大视野（FOV）代替缩放，爆发时有更强的光速拉伸感
-    camera.fov = 75 + clickBurst * 50;
+    camera.fov = 75 + clickBurst * 40;
     camera.updateProjectionMatrix();
 
     renderer.render(scene, camera);

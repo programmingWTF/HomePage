@@ -24,7 +24,7 @@
     </div>
 
     <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-        博客全元素渲染测试
+        网站全元素自动化测试报告
     </h1>
 
     <div class="post-tags" style="margin: 1rem 0 2rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
@@ -33,16 +33,16 @@
                 # 测试
             </a>
         
-            <a href="/posts/?tag=markdown" class="tag" style="text-decoration: none; font-size: 0.8rem;">
-                # Markdown
+            <a href="/posts/?tag=ui" class="tag" style="text-decoration: none; font-size: 0.8rem;">
+                # UI
             </a>
         
-            <a href="/posts/?tag=%e6%a0%b7%e5%bc%8f%e9%9b%86%e6%88%90" class="tag" style="text-decoration: none; font-size: 0.8rem;">
-                # 样式集成
+            <a href="/posts/?tag=%e8%b5%9b%e5%8d%9a%e6%9c%8b%e5%85%8b" class="tag" style="text-decoration: none; font-size: 0.8rem;">
+                # 赛博朋克
             </a>
         
-            <a href="/posts/?tag=layout" class="tag" style="text-decoration: none; font-size: 0.8rem;">
-                # Layout
+            <a href="/posts/?tag=hugo" class="tag" style="text-decoration: none; font-size: 0.8rem;">
+                # Hugo
             </a>
         
     </div>
@@ -52,70 +52,72 @@
         <span style="color: rgba(255,255,255,0.2);">|</span>
         <span>🔄 最近更新: 2026-04-01</span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
-        <span>⏱️ 预计阅读: 1 分钟 (约 116 字)</span>
+        <span>⏱️ 预计阅读: 1 分钟 (约 83 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
         <blockquote>
-<p><strong>这是一篇自动生成的测试文档</strong>，用于验证个人博客在不同 Markdown 元素下的渲染效果、响应式布局以及交互功能（复制按钮、图片灯箱等）。</p>
+<p><strong>注意</strong>：这是一篇自动化生成的测试文档，用于验证当前博客主题的所有 Markdown 元素渲染、代码块复制功能、粒子系统交互以及图片灯箱效果。</p>
 </blockquote>
+<h1 id="一级标题全元素渲染测试-h1">一级标题：全元素渲染测试 (H1)</h1>
+<p>这是一段基础文字测试。我们的目标是建立一个<strong>风格独特</strong>、<em>极简</em> 且具备 <code>高性能交互</code> 的个人空间。</p>
+<h2 id="二级标题全元素渲染测试-h2">二级标题：全元素渲染测试 (H2)</h2>
+<h3 id="三级标题全元素渲染测试-h3">三级标题：全元素渲染测试 (H3)</h3>
+<h4 id="四级标题全元素渲染测试-h4">四级标题：全元素渲染测试 (H4)</h4>
 <hr>
-<h1 id="-h1-大标题测试"># H1 大标题测试</h1>
-<h2 id="-h2-次级标题测试">## H2 次级标题测试</h2>
-<h3 id="-h3-三级标题测试">### H3 三级标题测试</h3>
-<h4 id="-h4-四级标题测试">#### H4 四级标题测试</h4>
-<hr>
-<h2 id="1-文字样式与行间代码">1. 文字样式与行间代码</h2>
-<p>这是一段正文。我们包含了一些 <strong>加粗文本</strong>，<em>斜体文本</em>，以及最重要的 <code>Inline Code 行间代码</code>。测试一下长句子在容器内的换行情况。C语言中的 <code>printf(&quot;%d&quot;, a);</code> 是最常用的输出语句。</p>
-<blockquote>
-<p><strong>引用块测试</strong>：
-&ldquo;The soul of a hacker is defined not by the machine, but by the will to explore.&rdquo;
-—— 风格化的引用块应该带有左侧边框和半透明背景。</p>
-</blockquote>
-<hr>
-<h2 id="2-列表样式-list">2. 列表样式 (List)</h2>
+<h2 id="2-文本列表与引用-typography">2. 文本、列表与引用 (Typography)</h2>
+<h3 id="列表样式">列表样式</h3>
 <ul>
-<li>这是一个无序列表项</li>
-<li>C语言特点：
-<ul>
-<li>高效、底层</li>
-<li>指针是一大难点</li>
-</ul>
-</li>
-<li>第二项
+<li><strong>无序列表</strong>：测试粒子系统的基础交互感。</li>
+<li><strong>有序列表</strong>：
 <ol>
-<li>有序列表 1</li>
-<li>有序列表 2</li>
+<li>第一步：将图片存放在 <code>static/C/</code>。</li>
+<li>第二步：在 MD 中引用路径 <code>/C/文件名.png</code>。</li>
 </ol>
 </li>
-</ul>
-<hr>
-<h2 id="3-代码块与一键复制-code-blocks">3. 代码块与一键复制 (Code Blocks)</h2>
-<p>下面是带有语法高亮的 C 代码块，请测试右上角的 <strong>“复制”</strong> 按钮是否能完美匹配深色主题：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 测试代码块注释 */</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>, b <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> b;
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Sum of %d and %d is: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, a, b, sum);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><hr>
-<h2 id="4-图片自适应与灯箱-image--lightbox">4. 图片自适应与灯箱 (Image &amp; Lightbox)</h2>
-<p>这是之前测试失败的图片。现在它应该<strong>自动缩小</strong>以适配正文宽度，且带有青色悬浮边框。点击它即可进入全屏沉浸式灯箱体验。</p>
-<p><img src="/C/WIP%20Dark%20Full.png" alt="测试图片展示"></p>
-<hr>
-<h2 id="5-各种元素混合与评论">5. 各种元素混合与评论</h2>
-<p>如果你能看到下方的 GitHub 评论插件、顶部的发光进度条，以及右下角的“回到顶部”按钮，说明博客的<strong>新功能集成</strong>已经全部成功。</p>
+<li><strong>任务列表</strong>：
 <ul>
 <li><input checked="" disabled="" type="checkbox"> 粒子点击扑面而来</li>
 <li><input checked="" disabled="" type="checkbox"> 代码一键复制</li>
 <li><input checked="" disabled="" type="checkbox"> 响应式图片约束</li>
-<li><input checked="" disabled="" type="checkbox"> 评论系统集成</li>
-<li><input checked="" disabled="" type="checkbox"> 预计阅读时间计算</li>
 </ul>
+</li>
+</ul>
+<h3 id="引用块-blockquote">引用块 (Blockquote)</h3>
+<blockquote>
+<p>&ldquo;代码是写给人看的，只是顺便给机器执行。&rdquo;       ——鲁迅。</p>
+<p>在这个测试块中，我们验证引用块在深色背景下的对比度和发光边缘效果。</p>
+</blockquote>
 <hr>
+<h2 id="3-代码块与一键复制-code-blocks">3. 代码块与一键复制 (Code Blocks)</h2>
+<p>测试代码块的语法高亮以及右上角的<strong>一键复制</strong>按钮：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">warp_drive_active</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;测试注释高亮&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Warp Drive Initialized&#34;</span>)
+</span></span><span style="display:flex;"><span>    intensity <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> intensity <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.1</span>:
+</span></span><span style="display:flex;"><span>        intensity <span style="color:#f92672">*=</span> <span style="color:#ae81ff">0.92</span>
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.05</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Transition Complete&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    warp_drive_active()
+</span></span></code></pre></div><hr>
+<h2 id="4-媒体元素自适应图片与灯箱-image--lightbox">4. 媒体元素：自适应图片与灯箱 (Image &amp; Lightbox)</h2>
+<p>这是一张测试图片。它应自动缩小以适配正文宽度，悬停时触发青色光效，<strong>点击</strong>即可进入全屏毛玻璃灯箱查看。</p>
+<p><img src="/C/WIP%20Dark%20Full.png" alt="测试图片 - C语言工作区"></p>
+<hr>
+<h2 id="5-交互与系统功能总结">5. 交互与系统功能总结</h2>
+<p>如果以上元素显示正常，请确认以下全局特性：</p>
+<ol>
+<li><strong>进度条</strong>：顶部可见渐变阅读进度。</li>
+<li><strong>滚动条</strong>：右侧有细长的青色发光轴。</li>
+<li><strong>评论区</strong>：底部的 <strong>Utterances</strong> 插件已成功加载。</li>
+<li><strong>阅读时间</strong>：文章开头应显示预估阅读时长。</li>
+</ol>
+<p><strong>测试结束，本页面将作为后续内容创作的视觉参考基准。</strong></p>
 
     </article>
 
@@ -281,6 +283,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     
-    <script src="/js/starfield.min.f09eab420b72f65188e11113562a44457bd27dd91b15a48ed852cdfa0b0ee3a4.js"></script>
+    <script src="/js/starfield.min.37d83ae315256b65208b632d945a202ca9075f9508f609822645ba241ea22c13.js"></script>
 </body>
 </html>

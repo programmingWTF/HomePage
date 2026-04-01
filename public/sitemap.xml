@@ -2,27 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/posts/mys/</loc>
-    <lastmod>2026-03-31T00:00:00+00:00</lastmod>
+    <loc>https://liguiyu.tech/tags/hugo/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/c%E8%AF%AD%E8%A8%80/</loc>
-    <lastmod>2026-03-31T00:00:00+00:00</lastmod>
+    <loc>https://liguiyu.tech/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2026-03-31T00:00:00+00:00</lastmod>
+    <loc>https://liguiyu.tech/posts/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-03-31T00:00:00+00:00</lastmod>
+    <loc>https://liguiyu.tech/tags/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-03-31T00:00:00+00:00</lastmod>
+    <loc>https://liguiyu.tech/tags/ui/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</loc>
-    <lastmod>2026-03-31T00:00:00+00:00</lastmod>
+    <loc>https://liguiyu.tech/tags/%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2026-03-31T00:00:00+00:00</lastmod>
+    <loc>https://liguiyu.tech/posts/test-all-elements/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://liguiyu.tech/tags/%E8%B5%9B%E5%8D%9A%E6%9C%8B%E5%85%8B/</loc>
+    <lastmod>2026-04-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://liguiyu.tech/categories/</loc>
   </url>
 </urlset>
