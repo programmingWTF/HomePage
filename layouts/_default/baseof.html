@@ -7,11 +7,66 @@
     
     {{ $style := resources.Get "css/main.css" | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    
+    <style>
+        /* 页面切换进入动画设定，避免任何导致 position:fixed 失效的属性持久停留在 body 上 */
+        /* 1. 使用固定在屏幕上层的伪元素遮罩进行白/黑幕淡出，不会影响 DOM 结构和定位！ */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #050505;
+            z-index: 999999;
+            pointer-events: none;
+            animation: pageReveal 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes pageReveal {
+            0% { opacity: 1; backdrop-filter: blur(10px); }
+            100% { opacity: 0; backdrop-filter: blur(0px); visibility: hidden; }
+        }
+        /* 页面离开时给 body 加上此类 */
+        body.page-fade-out::after {
+            visibility: visible;
+            animation: pageHide 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
+        }
+        @keyframes pageHide {
+            0% { opacity: 0; backdrop-filter: blur(0px); }
+            100% { opacity: 1; backdrop-filter: blur(10px); }
+        }
+    </style>
 </head>
 <body>
     {{ block "main" . }}{{ end }}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        // 丝滑的页面切换离开动画拦截
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // 仅针对同源站内链接做退场动画（排除散列锚点、新标签页打开等情况）
+                    if (this.hostname === window.location.hostname && 
+                        this.target !== '_blank' && 
+                        !this.hasAttribute('download') && 
+                        !this.getAttribute('href').startsWith('#') &&
+                        !this.href.includes('#')) {
+                        
+                        e.preventDefault(); // 阻断默认跳转
+                        
+                        // 只需要给 body 挂类名，伪元素遮罩就会自动执行覆盖动画
+                        document.body.classList.add('page-fade-out');
+                        
+                        // 等待动画结束后跳转
+                        setTimeout(() => {
+                            window.location.href = this.href;
+                        }, 350);
+                    }
+                });
+            });
+        });
+    </script>
     
     {{ $js := resources.Get "js/starfield.js" | minify | fingerprint }}
     <script src="{{ $js.RelPermalink }}"></script>

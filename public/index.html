@@ -7,7 +7,34 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.91a4daa5fc5cdc606da48802aa0154817ebc864bd0bc09e712a37eac43f212b4.css">
+    <link rel="stylesheet" href="/css/main.min.94f8ea0d12a2e71d66ab1133bf57f76a3a951a350c044b518830c8e2d88d9df0.css">
+    
+    <style>
+         
+         
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #050505;
+            z-index: 999999;
+            pointer-events: none;
+            animation: pageReveal 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes pageReveal {
+            0% { opacity: 1; backdrop-filter: blur(10px); }
+            100% { opacity: 0; backdrop-filter: blur(0px); visibility: hidden; }
+        }
+         
+        body.page-fade-out::after {
+            visibility: visible;
+            animation: pageHide 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
+        }
+        @keyframes pageHide {
+            0% { opacity: 0; backdrop-filter: blur(0px); }
+            100% { opacity: 1; backdrop-filter: blur(10px); }
+        }
+    </style>
 </head>
 <body>
     
@@ -53,6 +80,34 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    
+                    if (this.hostname === window.location.hostname && 
+                        this.target !== '_blank' && 
+                        !this.hasAttribute('download') && 
+                        !this.getAttribute('href').startsWith('#') &&
+                        !this.href.includes('#')) {
+                        
+                        e.preventDefault(); 
+                        
+                        
+                        document.body.classList.add('page-fade-out');
+                        
+                        
+                        setTimeout(() => {
+                            window.location.href = this.href;
+                        }, 350);
+                    }
+                });
+            });
+        });
+    </script>
     
     
     <script src="/js/starfield.min.37d83ae315256b65208b632d945a202ca9075f9508f609822645ba241ea22c13.js"></script>

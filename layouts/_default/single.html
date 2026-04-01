@@ -4,6 +4,19 @@
     <div id="reading-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #00ffff, #ff00ff); box-shadow: 0 0 10px #00ffff; transition: width 0.1s;"></div>
 </div>
 
+<!-- 侧边栏目录 (TOC) -->
+<nav class="toc-container">
+    <div class="toc-inner">
+        <div class="toc-title">
+            <i class="icon">📜</i>
+            <span>章节目录</span>
+        </div>
+        <div id="TableOfContents">
+            {{ .TableOfContents }}
+        </div>
+    </div>
+</nav>
+
 <div id="post-container" style="position: relative; z-index: 2; padding: 60px 10% 100px 10%; max-width: 900px; margin: 0 auto;">
     
     <div style="margin-bottom: 2rem;">
@@ -12,7 +25,7 @@
         </a>
     </div>
 
-    <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="post-title-main">
         {{ .Title }}
     </h1>
 
@@ -61,6 +74,7 @@
         ↑ Top
     </button>
 
+    <!-- 预留的全屏看图结构 -->
     <div style="margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
         <a href="/posts/" class="btn github-btn">← 返回列表</a>
     </div>
@@ -106,11 +120,54 @@ document.addEventListener('DOMContentLoaded', function() {
         wrapper.appendChild(copyBtn);
     });
 
+    // === 侧边栏 TOC 逻辑 ===
+    const tocLinks = document.querySelectorAll('#TableOfContents a');
+    const headers = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3');
+    const tocInner = document.querySelector('.toc-inner');
+
     // 页面滚动与进度条逻辑
     const backToTopBtn = document.getElementById('back-to-top');
     const progressBar = document.getElementById('reading-progress');
     
     window.addEventListener('scroll', () => {
+        // TOC 激活状态逻辑 (优化阈值，解决“跳转过头”或高亮不准的问题)
+        let current = "";
+        const threshold = 160; // 调大偏移量，确保小标题也能精准匹配
+        
+        headers.forEach(header => {
+            const headerTop = header.getBoundingClientRect().top;
+            // 如果标题距离窗口顶部的距离在阈值范围内，则认为当前就在这个标题
+            if (headerTop <= threshold) {
+                current = header.getAttribute('id');
+            }
+        });
+
+        if (current) {
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                    
+                    // 让 TOC 容器内的当前高亮项自动滚动到中心视野
+                    if (tocInner) {
+                        // 记录用户是否正在手动操作目录逻辑
+                        const tocRect = tocInner.getBoundingClientRect();
+                        const linkRect = link.getBoundingClientRect();
+                        // 计算元素相对于内层滚动容器的绝对高度
+                        const linkRelativeTop = linkRect.top - tocRect.top + tocInner.scrollTop;
+                        const containerHeight = tocInner.clientHeight;
+                        
+                        const targetScroll = linkRelativeTop - (containerHeight / 2) + (linkRect.height / 2);
+                        
+                        tocInner.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        }
+
         // 进度条逻辑
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
@@ -141,6 +198,36 @@ document.addEventListener('DOMContentLoaded', function() {
             backToTopBtn.style.background = 'rgba(0, 255, 255, 0.1)';
             backToTopBtn.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.2)';
         }
+    }
+
+    // === 额外优化：文章标题打字机动态效果 ===
+    const titleEl = document.getElementById('post-title-main');
+    if (titleEl) {
+        const text = titleEl.innerText;
+        titleEl.innerHTML = ""; // 清空文字，准备打字逻辑
+        let typedText = "";
+        let i = 0;
+        
+        // 创建光标
+        const cursor = document.createElement('span');
+        cursor.className = 'typing-dot';
+        titleEl.after(cursor);
+        
+        function typeWriter() {
+            if (i < text.length) {
+                typedText += text.charAt(i);
+                titleEl.innerText = typedText;
+                i++;
+                setTimeout(typeWriter, 50);
+            } else {
+                setTimeout(() => {
+                    cursor.style.transition = 'opacity 0.5s';
+                    cursor.style.opacity = '0';
+                    setTimeout(() => cursor.remove(), 500);
+                }, 1500);
+            }
+        }
+        setTimeout(typeWriter, 500); // 略微延迟再开始打印
     }
 
     // 图片放大功能 (Lightbox)

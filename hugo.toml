@@ -14,3 +14,8 @@ title = "liguiyu.tech"
     disablePathExternalEmptyDirs = true
     # 允许 URL 中出现中文
     hasCJKLanguage = true
+
+[markup.tableOfContents]
+    startLevel = 1
+    endLevel = 6
+    ordered = false

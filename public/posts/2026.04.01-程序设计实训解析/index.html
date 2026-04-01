@@ -6,7 +6,34 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.91a4daa5fc5cdc606da48802aa0154817ebc864bd0bc09e712a37eac43f212b4.css">
+    <link rel="stylesheet" href="/css/main.min.94f8ea0d12a2e71d66ab1133bf57f76a3a951a350c044b518830c8e2d88d9df0.css">
+    
+    <style>
+         
+         
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #050505;
+            z-index: 999999;
+            pointer-events: none;
+            animation: pageReveal 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes pageReveal {
+            0% { opacity: 1; backdrop-filter: blur(10px); }
+            100% { opacity: 0; backdrop-filter: blur(0px); visibility: hidden; }
+        }
+         
+        body.page-fade-out::after {
+            visibility: visible;
+            animation: pageHide 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
+        }
+        @keyframes pageHide {
+            0% { opacity: 0; backdrop-filter: blur(0px); }
+            100% { opacity: 1; backdrop-filter: blur(10px); }
+        }
+    </style>
 </head>
 <body>
     
@@ -14,6 +41,104 @@
 <div id="progress-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.05); z-index: 9999;">
     <div id="reading-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #00ffff, #ff00ff); box-shadow: 0 0 10px #00ffff; transition: width 0.1s;"></div>
 </div>
+
+
+<nav class="toc-container">
+    <div class="toc-inner">
+        <div class="toc-title">
+            <i class="icon">📜</i>
+            <span>章节目录</span>
+        </div>
+        <div id="TableOfContents">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#程序设计实训--题目解析">程序设计实训 — 题目解析</a>
+      <ul>
+        <li><a href="#写在前面">写在前面</a></li>
+        <li><a href="#常见头文件与约定统一说明">常见头文件与约定（统一说明）</a></li>
+        <li><a href="#题目-1约瑟夫环josephus-problem">题目 1：约瑟夫环（Josephus Problem）</a>
+          <ul>
+            <li><a href="#相关知识queue">相关知识：queue</a>
+              <ul>
+                <li><a href="#1-核心逻辑先来后到-fifo">1. 核心逻辑：先来后到 (FIFO)</a></li>
+                <li><a href="#2-核心操作只有这四招">2. 核心操作（只有这四招）</a></li>
+              </ul>
+            </li>
+            <li><a href="#题目要点">题目要点</a></li>
+            <li><a href="#思路与代码讲解逐段">思路与代码讲解（逐段）</a></li>
+            <li><a href="#参考实现">参考实现</a></li>
+          </ul>
+        </li>
+        <li><a href="#题目-2颜色计数按出现顺序统计">题目 2：颜色计数（按出现顺序统计）</a>
+          <ul>
+            <li><a href="#核心知识map">核心知识：map</a>
+              <ul>
+                <li><a href="#1-核心逻辑键值对-key-value-pair">1. 核心逻辑：键值对 (Key-Value Pair)</a></li>
+                <li><a href="#2-核心操作">2. 核心操作</a></li>
+                <li><a href="#-重点注意">⚠️ 重点注意：</a></li>
+              </ul>
+            </li>
+            <li><a href="#题目要点-1">题目要点</a></li>
+            <li><a href="#思路与代码讲解逐段-1">思路与代码讲解（逐段）</a></li>
+            <li><a href="#参考实现可复制运行">参考实现（可复制运行）</a></li>
+          </ul>
+        </li>
+        <li><a href="#题目-3去重并排序">题目 3：去重并排序</a>
+          <ul>
+            <li><a href="#核心知识set">核心知识：set</a>
+              <ul>
+                <li><a href="#1-核心逻辑去重与排序">1. 核心逻辑：去重与排序</a></li>
+                <li><a href="#2-核心操作-1">2. 核心操作</a></li>
+              </ul>
+            </li>
+            <li><a href="#题目要点-2">题目要点</a></li>
+            <li><a href="#思路与代码讲解逐段-2">思路与代码讲解（逐段）</a></li>
+            <li><a href="#参考实现可复制运行-1">参考实现（可复制运行）</a></li>
+          </ul>
+        </li>
+        <li><a href="#题目-4合并果堆最小体力">题目 4：合并果堆（最小体力）</a>
+          <ul>
+            <li><a href="#相关知识priority_queue">相关知识：priority_queue</a>
+              <ul>
+                <li><a href="#1-核心逻辑权重最高者先出">1. 核心逻辑：权重最高者先出</a></li>
+                <li><a href="#2-核心操作-2">2. 核心操作</a></li>
+                <li><a href="#3-小顶堆的实现">3. 小顶堆的实现</a></li>
+              </ul>
+            </li>
+            <li><a href="#题目要点-3">题目要点</a></li>
+            <li><a href="#思路与代码讲解逐段-3">思路与代码讲解（逐段）</a></li>
+            <li><a href="#参考实现可复制运行-2">参考实现（可复制运行）</a></li>
+          </ul>
+        </li>
+        <li><a href="#题目-5平衡括号序列判断">题目 5：平衡括号序列判断</a>
+          <ul>
+            <li><a href="#关键知识stack">关键知识：stack</a>
+              <ul>
+                <li><a href="#1-核心逻辑后进先出-lifo">1. 核心逻辑：后进先出 (LIFO)</a></li>
+                <li><a href="#2-核心操作-3">2. 核心操作</a></li>
+              </ul>
+            </li>
+            <li><a href="#题目要点-4">题目要点</a></li>
+            <li><a href="#思路与代码讲解逐段-4">思路与代码讲解（逐段）</a></li>
+            <li><a href="#参考实现可复制运行-3">参考实现（可复制运行）</a></li>
+          </ul>
+        </li>
+        <li><a href="#题目-6序列展开协议p1p2p3-参数控制">题目 6：序列展开协议（p1,p2,p3 参数控制）</a>
+          <ul>
+            <li><a href="#题目要点-5">题目要点</a></li>
+            <li><a href="#思路与代码讲解逐段-5">思路与代码讲解（逐段）</a></li>
+            <li><a href="#参考实现可复制运行-4">参考实现（可复制运行）</a></li>
+          </ul>
+        </li>
+        <li><a href="#统一注意事项与调试建议精简">统一注意事项与调试建议（精简）</a></li>
+        <li><a href="#结语">结语</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </div>
+</nav>
 
 <div id="post-container" style="position: relative; z-index: 2; padding: 60px 10% 100px 10%; max-width: 900px; margin: 0 auto;">
     
@@ -23,7 +148,7 @@
         </a>
     </div>
 
-    <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="post-title-main">
         2026.04.01 程序设计实训课程 题目解析
     </h1>
 
@@ -862,6 +987,7 @@ C++里，priority_queue里存在着这样两个定义：</p>
         ↑ Top
     </button>
 
+    
     <div style="margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
         <a href="/posts/" class="btn github-btn">← 返回列表</a>
     </div>
@@ -908,10 +1034,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     
+    const tocLinks = document.querySelectorAll('#TableOfContents a');
+    const headers = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3');
+    const tocInner = document.querySelector('.toc-inner');
+
+    
     const backToTopBtn = document.getElementById('back-to-top');
     const progressBar = document.getElementById('reading-progress');
     
     window.addEventListener('scroll', () => {
+        
+        let current = "";
+        const threshold = 160; 
+        
+        headers.forEach(header => {
+            const headerTop = header.getBoundingClientRect().top;
+            
+            if (headerTop <= threshold) {
+                current = header.getAttribute('id');
+            }
+        });
+
+        if (current) {
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                    
+                    
+                    if (tocInner) {
+                        
+                        const tocRect = tocInner.getBoundingClientRect();
+                        const linkRect = link.getBoundingClientRect();
+                        
+                        const linkRelativeTop = linkRect.top - tocRect.top + tocInner.scrollTop;
+                        const containerHeight = tocInner.clientHeight;
+                        
+                        const targetScroll = linkRelativeTop - (containerHeight / 2) + (linkRect.height / 2);
+                        
+                        tocInner.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        }
+
         
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
@@ -942,6 +1111,36 @@ document.addEventListener('DOMContentLoaded', function() {
             backToTopBtn.style.background = 'rgba(0, 255, 255, 0.1)';
             backToTopBtn.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.2)';
         }
+    }
+
+    
+    const titleEl = document.getElementById('post-title-main');
+    if (titleEl) {
+        const text = titleEl.innerText;
+        titleEl.innerHTML = ""; 
+        let typedText = "";
+        let i = 0;
+        
+        
+        const cursor = document.createElement('span');
+        cursor.className = 'typing-dot';
+        titleEl.after(cursor);
+        
+        function typeWriter() {
+            if (i < text.length) {
+                typedText += text.charAt(i);
+                titleEl.innerText = typedText;
+                i++;
+                setTimeout(typeWriter, 50);
+            } else {
+                setTimeout(() => {
+                    cursor.style.transition = 'opacity 0.5s';
+                    cursor.style.opacity = '0';
+                    setTimeout(() => cursor.remove(), 500);
+                }, 1500);
+            }
+        }
+        setTimeout(typeWriter, 500); 
     }
 
     
@@ -1005,6 +1204,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    
+                    if (this.hostname === window.location.hostname && 
+                        this.target !== '_blank' && 
+                        !this.hasAttribute('download') && 
+                        !this.getAttribute('href').startsWith('#') &&
+                        !this.href.includes('#')) {
+                        
+                        e.preventDefault(); 
+                        
+                        
+                        document.body.classList.add('page-fade-out');
+                        
+                        
+                        setTimeout(() => {
+                            window.location.href = this.href;
+                        }, 350);
+                    }
+                });
+            });
+        });
+    </script>
     
     
     <script src="/js/starfield.min.37d83ae315256b65208b632d945a202ca9075f9508f609822645ba241ea22c13.js"></script>

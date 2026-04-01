@@ -6,7 +6,34 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.b4e9603654896f7041ec2fe955e51b95a4798d0f54a5407886207320d78565da.css">
+    <link rel="stylesheet" href="/css/main.min.94f8ea0d12a2e71d66ab1133bf57f76a3a951a350c044b518830c8e2d88d9df0.css">
+    
+    <style>
+         
+         
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #050505;
+            z-index: 999999;
+            pointer-events: none;
+            animation: pageReveal 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes pageReveal {
+            0% { opacity: 1; backdrop-filter: blur(10px); }
+            100% { opacity: 0; backdrop-filter: blur(0px); visibility: hidden; }
+        }
+         
+        body.page-fade-out::after {
+            visibility: visible;
+            animation: pageHide 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
+        }
+        @keyframes pageHide {
+            0% { opacity: 0; backdrop-filter: blur(0px); }
+            100% { opacity: 1; backdrop-filter: blur(10px); }
+        }
+    </style>
 </head>
 <body>
     
@@ -14,6 +41,44 @@
 <div id="progress-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.05); z-index: 9999;">
     <div id="reading-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #00ffff, #ff00ff); box-shadow: 0 0 10px #00ffff; transition: width 0.1s;"></div>
 </div>
+
+
+<nav class="toc-container">
+    <div class="toc-inner">
+        <div class="toc-title">
+            <i class="icon">📜</i>
+            <span>章节目录</span>
+        </div>
+        <div id="TableOfContents">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一级标题元素渲染测试-h1">一级标题：元素渲染测试 (H1)</a>
+      <ul>
+        <li><a href="#二级标题元素渲染测试-h2">二级标题：元素渲染测试 (H2)</a>
+          <ul>
+            <li><a href="#三级标题元素渲染测试-h3">三级标题：元素渲染测试 (H3)</a>
+              <ul>
+                <li><a href="#四级标题元素渲染测试-h4">四级标题：元素渲染测试 (H4)</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#2-文本列表与引用-typography">2. 文本、列表与引用 (Typography)</a>
+          <ul>
+            <li><a href="#列表样式">列表样式</a></li>
+            <li><a href="#引用块-blockquote">引用块 (Blockquote)</a></li>
+          </ul>
+        </li>
+        <li><a href="#3-代码块与一键复制-code-blocks">3. 代码块与一键复制 (Code Blocks)</a></li>
+        <li><a href="#4-媒体元素自适应图片与灯箱-image--lightbox">4. 媒体元素：自适应图片与灯箱 (Image &amp; Lightbox)</a></li>
+        <li><a href="#5-交互与系统功能总结">5. 交互与系统功能总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </div>
+</nav>
 
 <div id="post-container" style="position: relative; z-index: 2; padding: 60px 10% 100px 10%; max-width: 900px; margin: 0 auto;">
     
@@ -23,7 +88,7 @@
         </a>
     </div>
 
-    <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    <h1 style="font-size: 2.5rem; background: linear-gradient(120deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="post-title-main">
         网站元素测试
     </h1>
 
@@ -52,7 +117,13 @@
         <span style="color: rgba(255,255,255,0.2);">|</span>
         <span>🔄 最近更新: 2026-04-01</span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
-        <span>⏱️ 预计阅读: 1 分钟 (约 83 字)</span>
+        
+        
+        
+            
+        
+        
+        <span>⏱️ 预计阅读: 2 分钟 (约 83 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
@@ -138,6 +209,7 @@
         ↑ Top
     </button>
 
+    
     <div style="margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
         <a href="/posts/" class="btn github-btn">← 返回列表</a>
     </div>
@@ -184,10 +256,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     
+    const tocLinks = document.querySelectorAll('#TableOfContents a');
+    const headers = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3');
+    const tocInner = document.querySelector('.toc-inner');
+
+    
     const backToTopBtn = document.getElementById('back-to-top');
     const progressBar = document.getElementById('reading-progress');
     
     window.addEventListener('scroll', () => {
+        
+        let current = "";
+        const threshold = 160; 
+        
+        headers.forEach(header => {
+            const headerTop = header.getBoundingClientRect().top;
+            
+            if (headerTop <= threshold) {
+                current = header.getAttribute('id');
+            }
+        });
+
+        if (current) {
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                    
+                    
+                    if (tocInner) {
+                        
+                        const tocRect = tocInner.getBoundingClientRect();
+                        const linkRect = link.getBoundingClientRect();
+                        
+                        const linkRelativeTop = linkRect.top - tocRect.top + tocInner.scrollTop;
+                        const containerHeight = tocInner.clientHeight;
+                        
+                        const targetScroll = linkRelativeTop - (containerHeight / 2) + (linkRect.height / 2);
+                        
+                        tocInner.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        }
+
         
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
@@ -218,6 +333,36 @@ document.addEventListener('DOMContentLoaded', function() {
             backToTopBtn.style.background = 'rgba(0, 255, 255, 0.1)';
             backToTopBtn.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.2)';
         }
+    }
+
+    
+    const titleEl = document.getElementById('post-title-main');
+    if (titleEl) {
+        const text = titleEl.innerText;
+        titleEl.innerHTML = ""; 
+        let typedText = "";
+        let i = 0;
+        
+        
+        const cursor = document.createElement('span');
+        cursor.className = 'typing-dot';
+        titleEl.after(cursor);
+        
+        function typeWriter() {
+            if (i < text.length) {
+                typedText += text.charAt(i);
+                titleEl.innerText = typedText;
+                i++;
+                setTimeout(typeWriter, 50);
+            } else {
+                setTimeout(() => {
+                    cursor.style.transition = 'opacity 0.5s';
+                    cursor.style.opacity = '0';
+                    setTimeout(() => cursor.remove(), 500);
+                }, 1500);
+            }
+        }
+        setTimeout(typeWriter, 500); 
     }
 
     
@@ -281,6 +426,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    
+                    if (this.hostname === window.location.hostname && 
+                        this.target !== '_blank' && 
+                        !this.hasAttribute('download') && 
+                        !this.getAttribute('href').startsWith('#') &&
+                        !this.href.includes('#')) {
+                        
+                        e.preventDefault(); 
+                        
+                        
+                        document.body.classList.add('page-fade-out');
+                        
+                        
+                        setTimeout(() => {
+                            window.location.href = this.href;
+                        }, 350);
+                    }
+                });
+            });
+        });
+    </script>
     
     
     <script src="/js/starfield.min.37d83ae315256b65208b632d945a202ca9075f9508f609822645ba241ea22c13.js"></script>
