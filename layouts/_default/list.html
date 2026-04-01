@@ -40,7 +40,15 @@
                 <a href="{{ .RelPermalink }}" style="color: #00ffff; font-size: 1.1rem; text-decoration: none; display: block; margin-bottom: 4px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#00ffff'">
                     {{ .Title | default "未命名文章" }}
                 </a>
-                <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：{{ .Date.Format "2006-01-02" }} | 🔄 最近更新：{{ .Lastmod.Format "2006-01-02" }} | ⏱️ 预计阅读：{{ .ReadingTime }} 分钟</span>
+                {{ $words := .WordCount }}
+                {{ $readTime := (div $words 200) }}
+                {{ if gt (len (findRE "```" .RawContent)) 0 }}
+                    {{ $readTime = (add $readTime (mul (len (findRE "```" .RawContent)) 1)) }}
+                {{ end }}
+                {{ if lt $readTime 1 }}
+                    {{ $readTime = 1 }}
+                {{ end }}
+                <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：{{ .Date.Format "2006-01-02" }} | 🔄 最近更新：{{ .Lastmod.Format "2006-01-02" }} | ⏱️ 预计阅读：{{ $readTime }} 分钟</span>
                 <div style="margin-top: 4px;">
                     {{ range .Params.tags }}
                     <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); margin-right: 8px;">#{{ . }}</span>
