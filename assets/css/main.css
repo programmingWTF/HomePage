@@ -1,5 +1,22 @@
 
 /* 基础样式重置 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(0, 255, 255, 0.1);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
 body { 
     margin: 0; 
     background-color: #050505; /* 深色极简背景 */
@@ -78,7 +95,25 @@ h1 {
     100% { filter: drop-shadow(0 0 25px rgba(255, 0, 255, 0.6)); }
 }
 
-p.subtitle { 
+/* 文章内图片自适应 */
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto; /* 居中 */
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.markdown-content img:hover {
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+
+p.subtitle {
     font-size: 1.5rem; 
     margin: 0.5rem 0; 
     color: #d1d5db; 
@@ -300,6 +335,7 @@ p.desc {
 
 /* 5. 代码块渲染 (Code Blocks) */
 .markdown-content pre {
+    /* 移除预留的 relative */
     background: rgba(15, 15, 15, 0.6) !important;
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -309,6 +345,41 @@ p.desc {
     overflow-x: auto;
     margin: 1.5rem 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.code-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(30, 30, 35, 0.8);
+    border: 1px solid rgba(126, 232, 250, 0.3);
+    color: #e0e0e0;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.copy-btn:hover {
+    background: rgba(126, 232, 250, 0.2);
+    color: #7ee8fa;
+    border-color: #7ee8fa;
+    box-shadow: 0 0 10px rgba(126, 232, 250, 0.3);
+}
+
+.copy-btn.copied {
+    color: #7ee8fa;
+    border-color: #7ee8fa;
+    box-shadow: 0 0 15px rgba(126, 232, 250, 0.5);
+    background: rgba(126, 232, 250, 0.15);
 }
 
 .markdown-content code {

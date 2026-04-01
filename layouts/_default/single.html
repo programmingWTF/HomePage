@@ -1,4 +1,9 @@
 {{ define "main" }}
+<!-- 顶部阅读进度条 -->
+<div id="progress-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.05); z-index: 9999;">
+    <div id="reading-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #00ffff, #ff00ff); box-shadow: 0 0 10px #00ffff; transition: width 0.1s;"></div>
+</div>
+
 <div id="post-container" style="position: relative; z-index: 2; padding: 60px 10% 100px 10%; max-width: 900px; margin: 0 auto;">
     
     <div style="margin-bottom: 2rem;">
@@ -13,23 +18,179 @@
 
     <div class="post-tags" style="margin: 1rem 0 2rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
         {{ range .Params.tags }}
-            {{ $tagPage := $.Site.GetPage (printf "/tags/%s" (. | urlize)) }}
-            <a href="{{ $tagPage.RelPermalink }}" class="tag" style="text-decoration: none; font-size: 0.8rem;">
+            <a href="/posts/?tag={{ . | lower }}" class="tag" style="text-decoration: none; font-size: 0.8rem;">
                 # {{ . }}
             </a>
         {{ end }}
     </div>
 
-    <div class="post-meta" style="color: #9ca3af; margin: 1rem 0 3rem 0; font-size: 0.9rem;">
-        发布于: {{ .Date.Format "2006-01-02" }}
+    <div class="post-meta" style="color: #9ca3af; margin: 1rem 0 3rem 0; font-size: 0.9rem; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+        <span>📅 首次发布: {{ .Date.Format "2006-01-02" }}</span>
+        <span style="color: rgba(255,255,255,0.2);">|</span>
+        <span>🔄 最近更新: {{ .Lastmod.Format "2006-01-02" }}</span>
+        <span style="color: rgba(255,255,255,0.2);">|</span>
+        <span>⏱️ 预计阅读: {{ .ReadingTime }} 分钟 (约 {{ .WordCount }} 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
         {{ .Content }}
     </article>
 
-    <div style="margin-top: 5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+    <!-- 实用优化：评论留言系统 (基于 utterances，利用当前 GitHub issues) -->
+    <div class="comments-section" style="margin-top: 4rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 2rem;">
+        <h3 style="color: #00ffff; margin-bottom: 1rem;">留言与评论</h3>
+        <script src="https://utteranc.es/client.js"
+                repo="programmingWTF/HomePage"
+                issue-term="pathname"
+                theme="photon-dark"
+                crossorigin="anonymous"
+                async>
+        </script>
+    </div>
+
+    <!-- 实用优化：回到顶部按钮 -->
+    <button id="back-to-top" style="display: none; position: fixed; bottom: 30px; right: 30px; background: rgba(0, 255, 255, 0.1); border: 1px solid #00ffff; color: #00ffff; padding: 10px 15px; border-radius: 5px; cursor: pointer; backdrop-filter: blur(5px); z-index: 100; transition: all 0.3s; box-shadow: 0 0 10px rgba(0,255,255,0.2);">
+        ↑ Top
+    </button>
+
+    <div style="margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
         <a href="/posts/" class="btn github-btn">← 返回列表</a>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('.markdown-content pre');
+    
+    codeBlocks.forEach(function(pre) {
+        // 给 pre 添加相对定位以便内部相对它绝对定位
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.marginBottom = '1.5rem';
+        wrapper.className = 'code-wrapper';
+        
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        pre.style.margin = '0'; // 移除旧的上下边距，因为给了 wrapper
+        
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.innerHTML = '📋 复制';
+        
+        copyBtn.addEventListener('click', function() {
+            const codeFragment = pre.querySelector('code');
+            const pContent = codeFragment ? codeFragment.innerText : pre.innerText;
+            
+            navigator.clipboard.writeText(pContent).then(function() {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '✨ 已复制!';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(function() {
+                    copyBtn.innerHTML = '📋 复制';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Copy failed', err);
+            });
+        });
+        
+        wrapper.appendChild(copyBtn);
+    });
+
+    // 页面滚动与进度条逻辑
+    const backToTopBtn = document.getElementById('back-to-top');
+    const progressBar = document.getElementById('reading-progress');
+    
+    window.addEventListener('scroll', () => {
+        // 进度条逻辑
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+        const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+        if(progressBar) progressBar.style.width = scrollPercent + '%';
+
+        // 回到顶部按钮逻辑
+        if (backToTopBtn) {
+            if (window.scrollY > 300) {
+                backToTopBtn.style.display = 'block';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        }
+    });
+
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        backToTopBtn.onmouseenter = () => {
+            backToTopBtn.style.background = 'rgba(0, 255, 255, 0.2)';
+            backToTopBtn.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.5)';
+        };
+        backToTopBtn.onmouseleave = () => {
+            backToTopBtn.style.background = 'rgba(0, 255, 255, 0.1)';
+            backToTopBtn.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.2)';
+        }
+    }
+
+    // 图片放大功能 (Lightbox)
+    const images = document.querySelectorAll('.markdown-content img');
+    images.forEach(img => {
+        img.style.cursor = 'zoom-in';
+        img.style.borderRadius = '5px';
+        img.style.transition = 'box-shadow 0.3s';
+        
+        img.addEventListener('mouseenter', () => {
+            img.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.3)';
+        });
+        img.addEventListener('mouseleave', () => {
+            img.style.boxShadow = 'none';
+        });
+
+        img.addEventListener('click', () => {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100vw';
+            overlay.style.height = '100vh';
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+            overlay.style.backdropFilter = 'blur(5px)';
+            overlay.style.zIndex = '10000';
+            overlay.style.display = 'flex';
+            overlay.style.justifyContent = 'center';
+            overlay.style.alignItems = 'center';
+            overlay.style.cursor = 'zoom-out';
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.3s';
+
+            const zoomedImg = document.createElement('img');
+            zoomedImg.src = img.src;
+            zoomedImg.style.maxWidth = '90%';
+            zoomedImg.style.maxHeight = '90%';
+            zoomedImg.style.borderRadius = '5px';
+            zoomedImg.style.boxShadow = '0 0 30px rgba(0, 255, 255, 0.5)';
+            zoomedImg.style.transform = 'scale(0.9)';
+            zoomedImg.style.transition = 'transform 0.3s';
+
+            overlay.appendChild(zoomedImg);
+            document.body.appendChild(overlay);
+
+            // 触发动画
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+                zoomedImg.style.transform = 'scale(1)';
+            });
+
+            overlay.addEventListener('click', () => {
+                overlay.style.opacity = '0';
+                zoomedImg.style.transform = 'scale(0.9)';
+                setTimeout(() => overlay.remove(), 300);
+            });
+        });
+    });
+});
+</script>
 {{ end }}

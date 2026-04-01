@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C/C&#43;&#43; on liguiyu.tech</title>
+    <link>http://localhost:1313/tags/c/c&#43;&#43;/</link>
+    <description>Recent content in C/C&#43;&#43; on liguiyu.tech</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 31 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/c/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C语言</title>
+      <link>http://localhost:1313/posts/mys/</link>
+      <pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mys/</guid>
+      <description>&lt;h3 id=&#34;希望通过本文可以让大家掌握c语言的基础顺利通过期末考试并在接下来的c学习中更加轻松&#34;&gt;&lt;strong&gt;希望通过本文，可以让大家掌握C语言的基础，顺利通过期末考试，并在接下来的C++学习中更加轻松&lt;/strong&gt;&lt;/h3&gt;&#xA;&lt;h4 id=&#34;前情提要&#34;&gt;前情提要&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;这不是一篇教你如何速通C语言的文章&lt;/strong&gt;，如果你只是想在短时间内达到不挂科的目的而不是认真学习C语言，那么可能本教程并不适合你&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;hello-world与最最基础的语法&#34;&gt;&amp;ldquo;Hello World&amp;quot;与最最基础的语法&lt;/h1&gt;&#xA;&lt;p&gt;以下是一个最最基础的程序&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(){&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;这个程序相信大家都会写但或许你还有些不知道的东西&#34;&gt;这个程序相信大家都会写，但或许你还有些不知道的东西&lt;/h2&gt;&#xA;&lt;p&gt;什么是 &lt;code&gt;stdio.h&lt;/code&gt; ？&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;stdio&lt;/code&gt;是&lt;code&gt;standard&lt;/code&gt;的缩写；&lt;code&gt;i&lt;/code&gt;，&lt;code&gt;input&lt;/code&gt;，表示输入；&lt;code&gt;o&lt;/code&gt;，&lt;code&gt;output&lt;/code&gt;，表示输出&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;stdio.h&lt;/code&gt; 就是：标准输入输出的头文件，提供了我们最常用的&lt;code&gt;printf&lt;/code&gt;、&lt;code&gt;scanf&lt;/code&gt;函数。毕竟我相信我们都无法手搓一个&lt;code&gt;printf&lt;/code&gt;/&lt;code&gt;scanf&lt;/code&gt;函数出来&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>

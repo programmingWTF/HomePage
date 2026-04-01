@@ -63,16 +63,41 @@ const animate = () => {
     const elapsedTime = clock.getElapsedTime();
 
     clickBurst *= 0.92;
+    // 基础流动速度为负（离人而去），点击爆发速度为正（扑面而来）
+    const speedCyan = -0.005 + clickBurst * 0.2; 
+    const speedMagenta = -0.006 + clickBurst * 0.24;
+    
+    // 更新粒子坐标以确保均匀分布（双向包裹）
+    function updateParticles(particles, speed) {
+        const positions = particles.geometry.attributes.position.array;
+        for(let i = 2; i < positions.length; i+=3) {
+            positions[i] += speed;
+            // 摄像机在 Z=3，所以粒子 Z 轴范围大致在 -12 到 3 之间
+            if(positions[i] > +4) { 
+                positions[i] -= 16; 
+                positions[i-1] = (Math.random() - 0.5) * 15; // 重置 Y
+                positions[i-2] = (Math.random() - 0.5) * 15; // 重置 X
+            }
+            if(positions[i] < -12) { 
+                positions[i] += 16; 
+                positions[i-1] = (Math.random() - 0.5) * 15;
+                positions[i-2] = (Math.random() - 0.5) * 15;
+            }
+        }
+        particles.geometry.attributes.position.needsUpdate = true;
+    }
+    
+    updateParticles(particlesCyan, speedCyan);
+    updateParticles(particlesMagenta, speedMagenta);
 
+    // 维持柔和的整体旋转感
     particlesCyan.rotation.y = elapsedTime * 0.05;
     particlesCyan.rotation.x = elapsedTime * 0.02;
     
     particlesMagenta.rotation.y = elapsedTime * -0.03;
     particlesMagenta.rotation.x = elapsedTime * -0.01;
 
-    particlesCyan.position.y = Math.sin(elapsedTime * 0.5) * 0.1;
-    particlesMagenta.position.x = Math.cos(elapsedTime * 0.4) * 0.1;
-
+    // 依然响应鼠标轻微偏移
     targetX = mouseX * 0.001;
     targetY = mouseY * 0.001;
     
@@ -82,12 +107,9 @@ const animate = () => {
     particlesMagenta.rotation.y += 0.3 * (targetX - particlesMagenta.rotation.y);
     particlesMagenta.rotation.x += 0.3 * (targetY - particlesMagenta.rotation.x);
 
-    const scaleCyan = 1 + clickBurst * 0.5;
-    const scaleMagenta = 1 + clickBurst * 0.8;
-    particlesCyan.scale.set(scaleCyan, scaleCyan, scaleCyan);
-    particlesMagenta.scale.set(scaleMagenta, scaleMagenta, scaleMagenta);
-    
-    camera.position.z = 3 - clickBurst * 1.5;
+    // 用扩大视野（FOV）代替缩放，爆发时有更强的光速拉伸感
+    camera.fov = 75 + clickBurst * 50;
+    camera.updateProjectionMatrix();
 
     renderer.render(scene, camera);
 };
