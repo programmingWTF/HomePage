@@ -2,7 +2,7 @@
 title: "网站全元素自动化测试报告"
 date: 2026-04-01
 lastmod: 2026-04-01
-tags: ["测试","UI","赛博朋克","Hugo"]
+tags: ["测试","UI","Hugo","Test"]
 draft: false
 description: "这是一篇用于测试个人博客所有视觉元素和交互功能的专用文档。"
 ---
