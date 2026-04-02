@@ -6,7 +6,28 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.18c6ce22b0b125e694a31700a57a4e3d40836adbed768f65c99d55e3d31918e2.css">
+    <link rel="stylesheet" href="/css/main.min.a577e5c063ac6a9850151bb2764cac8d07e7b23be877edbfb4e4b415eed77aab.css">
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError : false,
+                    ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"]
+                });
+            }
+        });
+    </script>
     
     <style>
          
@@ -72,6 +93,11 @@
     
     <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
         
+            <div class="tag-combo active" data-tag="c" style="cursor: pointer;">
+                <span class="t-name">c</span>
+                <span class="t-count">1</span>
+            </div>
+        
             <div class="tag-combo active" data-tag="c&#43;&#43;" style="cursor: pointer;">
                 <span class="t-name">c&#43;&#43;</span>
                 <span class="t-count">1</span>
@@ -115,6 +141,24 @@
     </div>
 
     <div class="posts-container" id="posts-list" style="max-height: 55vh; overflow-y: auto; padding: 0.5rem 1rem; text-align: left;">
+        
+            <div class="post-item" 
+                 data-tags=""
+                 data-content="">
+                <a href="/tags/c/" style="color: #00ffff; font-size: 1.1rem; text-decoration: none; display: block; margin-bottom: 6px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#00ffff'">
+                    C
+                </a>
+                
+                
+                
+                
+                    
+                
+                <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：2026-04-01 | 🔄 最近更新：2026-04-01 | ⏱️ 预计阅读：1 分钟</span>
+                <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 2px;">
+                    
+                </div>
+            </div>
         
             <div class="post-item" 
                  data-tags=""
@@ -255,6 +299,42 @@
                     
                 
                 <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：2026-04-01 | 🔄 最近更新：2026-04-01 | ⏱️ 预计阅读：1 分钟</span>
+                <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 2px;">
+                    
+                </div>
+            </div>
+        
+            <div class="post-item" 
+                 data-tags=""
+                 data-content="">
+                <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="color: #00ffff; font-size: 1.1rem; text-decoration: none; display: block; margin-bottom: 6px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#00ffff'">
+                    内存管理
+                </a>
+                
+                
+                
+                
+                    
+                
+                <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：0001-01-01 | 🔄 最近更新：0001-01-01 | ⏱️ 预计阅读：1 分钟</span>
+                <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 2px;">
+                    
+                </div>
+            </div>
+        
+            <div class="post-item" 
+                 data-tags=""
+                 data-content="">
+                <a href="/tags/%E6%8C%87%E9%92%88/" style="color: #00ffff; font-size: 1.1rem; text-decoration: none; display: block; margin-bottom: 6px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#00ffff'">
+                    指针
+                </a>
+                
+                
+                
+                
+                    
+                
+                <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：0001-01-01 | 🔄 最近更新：0001-01-01 | ⏱️ 预计阅读：1 分钟</span>
                 <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 2px;">
                     
                 </div>

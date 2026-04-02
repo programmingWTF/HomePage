@@ -683,6 +683,44 @@ html {
     color: #9ca3af;
 }
 
+/* GitHub style Alerts */
+.markdown-content blockquote.markdown-alert {
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    color: inherit;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 0.25rem solid;
+    font-style: normal;
+}
+
+.markdown-content .markdown-alert-title {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+}
+
+.markdown-content .markdown-alert-title svg {
+    margin-right: 0.5rem;
+    fill: currentColor;
+}
+
+.markdown-content blockquote.markdown-alert-note { border-left-color: #2f81f7; }
+.markdown-content blockquote.markdown-alert-note .markdown-alert-title { color: #2f81f7; }
+
+.markdown-content blockquote.markdown-alert-tip { border-left-color: #3fb950; }
+.markdown-content blockquote.markdown-alert-tip .markdown-alert-title { color: #3fb950; }
+
+.markdown-content blockquote.markdown-alert-important { border-left-color: #ab7df8; }
+.markdown-content blockquote.markdown-alert-important .markdown-alert-title { color: #ab7df8; }
+
+.markdown-content blockquote.markdown-alert-warning { border-left-color: #d29922; }
+.markdown-content blockquote.markdown-alert-warning .markdown-alert-title { color: #d29922; }
+
+.markdown-content blockquote.markdown-alert-caution { border-left-color: #f85149; }
+.markdown-content blockquote.markdown-alert-caution .markdown-alert-title { color: #f85149; }
+
 /* === 打字机效果装饰 === */
 .typing-dot {
     display: inline-block;

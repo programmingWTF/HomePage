@@ -19,3 +19,6 @@ title = "liguiyu.tech"
     startLevel = 1
     endLevel = 6
     ordered = false
+
+[markup.goldmark.renderer]
+    unsafe = true

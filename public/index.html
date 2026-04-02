@@ -7,7 +7,28 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.18c6ce22b0b125e694a31700a57a4e3d40836adbed768f65c99d55e3d31918e2.css">
+    <link rel="stylesheet" href="/css/main.min.a577e5c063ac6a9850151bb2764cac8d07e7b23be877edbfb4e4b415eed77aab.css">
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError : false,
+                    ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"]
+                });
+            }
+        });
+    </script>
     
     <style>
          
