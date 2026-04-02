@@ -132,7 +132,7 @@
         <li><a href="#避免野指针">避免“野指针”！</a></li>
         <li><a href="#扩展内容">扩展内容</a>
           <ul>
-            <li><a href="#null与nullptr">NULL与nullptr</a></li>
+            <li><a href="#1-null与nullptr">1. NULL与nullptr</a></li>
             <li><a href="#2-const-与--的纠缠">2. const 与 * 的纠缠</a>
               <ul>
                 <li><a href="#heading"><strong>① <code>const</code> 在 <code>*</code> 左边：锁住的是“内容”</strong></a></li>
@@ -209,7 +209,7 @@
             
         
         
-        <span>⏱️ 预计阅读: 16 分钟 (约 566 字)</span>
+        <span>⏱️ 预计阅读: 16 分钟 (约 567 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
@@ -459,7 +459,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>p;   <span style="color:#75715e">// 危险！这是野指针，它指向的地址是随机的
 </span></span></span><span style="display:flex;"><span><span style="color:#f92672">*</span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>; <span style="color:#75715e">// 极大概率导致程序崩溃（Segmentation Fault）
 </span></span></span></code></pre></div><h2 id="扩展内容">扩展内容</h2>
-<h3 id="null与nullptr">NULL与nullptr</h3>
+<h3 id="1-null与nullptr">1. NULL与nullptr</h3>
 <p>在老版本的 C/C++ 中，我们习惯用 <code>NULL</code> 来表示“空指针”。但本质上，<code>NULL</code> 只是一个被强转为指针的 <strong>0</strong>。</p>
 <ul>
 <li><strong>危险点：</strong> 因为 <code>NULL</code> 本质是 0，有时候编译器会把它误认为是 <code>int</code> 类型，导致函数重载时调错方向。</li>
