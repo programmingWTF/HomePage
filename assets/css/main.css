@@ -548,9 +548,49 @@ p.desc {
     border: 1px solid rgba(0, 255, 255, 0.2);
     border-radius: 20px;
     z-index: 1000;
-    overflow: hidden; /* 这里设为 hidden，防止内部内容直接溢出 */
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: visible; /* 改为 visible 以允许切换按钮溢出 */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+.toc-container.collapsed {
+    left: -290px; /* 完全移出屏幕左侧，保留一点边缘或通过按钮呼回 */
+}
+
+/* 目录切换按钮 */
+.toc-toggle {
+    position: absolute;
+    right: -40px;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    background: rgba(8, 8, 12, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    color: #00ffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+}
+
+.toc-toggle:hover {
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.toc-toggle .icon {
+    font-size: 1.2rem;
+    transition: transform 0.5s ease;
+}
+
+.toc-container.collapsed .toc-toggle .icon {
+    transform: rotate(180deg);
 }
 
 /* 内层滚动容器：解决滚动条不穿圆角的关键 */

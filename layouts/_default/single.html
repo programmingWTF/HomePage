@@ -5,7 +5,10 @@
 </div>
 
 <!-- 侧边栏目录 (TOC) -->
-<nav class="toc-container">
+<nav class="toc-container" id="toc-main">
+    <div class="toc-toggle" id="toc-toggler" title="折叠/展开目录">
+        <span class="icon">❮</span>
+    </div>
     <div class="toc-inner">
         <div class="toc-title">
             <i class="icon">📜</i>
@@ -153,8 +156,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const tocLinks = document.querySelectorAll('#TableOfContents a');
     const headers = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3');
     const tocInner = document.querySelector('.toc-inner');
+    const tocContainer = document.getElementById('toc-main');
+    const tocToggler = document.getElementById('toc-toggler');
     window.isTOCScrolling = false;
     let tocScrollTimer = null;
+
+    // TOC 折叠/收起逻辑
+    if (tocToggler && tocContainer) {
+        tocToggler.addEventListener('click', () => {
+            tocContainer.classList.toggle('collapsed');
+            // 切换按钮文字或图标的内部提示（可选）
+            const icon = tocToggler.querySelector('.icon');
+            if (tocContainer.classList.contains('collapsed')) {
+                // 已收起，待展开
+                localStorage.setItem('toc-collapsed', 'true');
+            } else {
+                // 已展开，待收起
+                localStorage.setItem('toc-collapsed', 'false');
+            }
+        });
+
+        // 记忆用户的折叠习惯
+        if (localStorage.getItem('toc-collapsed') === 'true' || window.innerWidth < 1200) {
+            tocContainer.classList.add('collapsed');
+        }
+    }
 
     // 拦截 TOC 点击，解决长文章跳转时的“鬼畜”回弹问题
     tocLinks.forEach(link => {
