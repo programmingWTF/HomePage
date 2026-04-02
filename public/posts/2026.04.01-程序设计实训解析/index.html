@@ -6,7 +6,7 @@
     <title>liguiyu.tech</title>
     
     
-    <link rel="stylesheet" href="/css/main.min.a577e5c063ac6a9850151bb2764cac8d07e7b23be877edbfb4e4b415eed77aab.css">
+    <link rel="stylesheet" href="/css/main.min.4f61affe9b1344bbff0a1cb8c7dc031167632d0c46ce64328c442861d5f09d89.css">
     
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
@@ -64,7 +64,10 @@
 </div>
 
 
-<nav class="toc-container">
+<nav class="toc-container" id="toc-main">
+    <div class="toc-toggle" id="toc-toggler" title="折叠/展开目录">
+        <span class="icon">❮</span>
+    </div>
     <div class="toc-inner">
         <div class="toc-title">
             <i class="icon">📜</i>
@@ -197,10 +200,6 @@
         
             <a href="/posts/?tag=%e7%ae%97%e6%b3%95%e7%ab%9e%e8%b5%9b" class="tag" style="text-decoration: none; font-size: 0.8rem;">
                 # 算法竞赛
-            </a>
-        
-            <a href="/posts/?tag=c%2fc%2b%2b" class="tag" style="text-decoration: none; font-size: 0.8rem;">
-                # C/C&#43;&#43;
             </a>
         
             <a href="/posts/?tag=stl" class="tag" style="text-decoration: none; font-size: 0.8rem;">
@@ -1087,8 +1086,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const tocLinks = document.querySelectorAll('#TableOfContents a');
     const headers = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3');
     const tocInner = document.querySelector('.toc-inner');
+    const tocContainer = document.getElementById('toc-main');
+    const tocToggler = document.getElementById('toc-toggler');
     window.isTOCScrolling = false;
     let tocScrollTimer = null;
+
+    
+    if (tocToggler && tocContainer) {
+        tocToggler.addEventListener('click', () => {
+            tocContainer.classList.toggle('collapsed');
+            
+            const icon = tocToggler.querySelector('.icon');
+            if (tocContainer.classList.contains('collapsed')) {
+                
+                localStorage.setItem('toc-collapsed', 'true');
+            } else {
+                
+                localStorage.setItem('toc-collapsed', 'false');
+            }
+        });
+
+        
+        if (localStorage.getItem('toc-collapsed') === 'true' || window.innerWidth < 1200) {
+            tocContainer.classList.add('collapsed');
+        }
+    }
 
     
     tocLinks.forEach(link => {
