@@ -1,4 +1,5 @@
-baseURL = "https://liguiyu.tech"
+baseURL = "https://liguiyu.tech/"
+canonifyURLs = true
 languageCode = "zh-cn"
 title = "liguiyu.tech"
 
@@ -22,3 +23,8 @@ title = "liguiyu.tech"
 
 [markup.goldmark.renderer]
     unsafe = true
+
+[sitemap]
+  changefreq = "daily"
+  priority = 0.5
+  filename = "sitemap.xml"

@@ -171,36 +171,112 @@
 编译器在处理你的代码时，会发生下面的变化：
 你写的 int a; 变成了 long long a;（这是你的目的，为了防止数据溢出）。 你写的 vector&amp;amp;lt;int&amp;amp;gt; v; 变成了 vector&amp;amp;lt;long long&amp;amp;gt; v;。 但是！ 你写的 int main() 也会变成 long long main()。 由于c&#43;&#43;要求main函数的返回值只能是int，而且我们直接把int的含义改成了long long，所以这里我们只好写signed main()，用一个和int意义相同但是名字不同的signed 以上头文件只讲解一次，后续涉及到的代码段会直接引用这些类型和容器，讲解重点放在逻辑与控制流程上。
 ">
-                <a href="/posts/2026.04.01-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%AE%AD%E8%A7%A3%E6%9E%90/" style="color: #00ffff; font-size: 1.1rem; text-decoration: none; display: block; margin-bottom: 6px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#00ffff'">
+                <a href="/posts/2026.04.01-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%AE%AD%E8%A7%A3%E6%9E%90/" class="post-title-link">
                     2026.04.01 程序设计实训课程 题目解析
                 </a>
-                
-                
-                
+                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                    <span>👤 liguiyu</span>
                     
-                
-                
-                <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：2026-04-01 | 🔄 最近更新：2026-04-01 | ⏱️ 预计阅读：65 分钟</span>
-                <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 2px;">
                     
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#C&#43;&#43;</span>
                     
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#编程</span>
+                        
                     
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#题目解析</span>
                     
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#技术分享</span>
+                    <span>⏱️ 65 分钟</span>
+                    <span>🔄 2026-04-01</span>
+                    <span class="busuanzi_container_page_pv" style="display:none;">👀 <span class="busuanzi_value_page_pv"></span>次</span>
+                </div>
+                <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2px;">
                     
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#NUAA</span>
+                    <span class="post-item-tag">#C&#43;&#43;</span>
                     
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#算法竞赛</span>
+                    <span class="post-item-tag">#编程</span>
                     
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#STL</span>
+                    <span class="post-item-tag">#题目解析</span>
+                    
+                    <span class="post-item-tag">#技术分享</span>
+                    
+                    <span class="post-item-tag">#NUAA</span>
+                    
+                    <span class="post-item-tag">#算法竞赛</span>
+                    
+                    <span class="post-item-tag">#STL</span>
                     
                 </div>
             </div>
         
     </div>
+
+    <style>
+    .post-title-link {
+        color: #00ffff !important; 
+        font-size: 1.14rem; 
+        text-decoration: none; 
+        display: block; 
+        margin-bottom: 6px; 
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .post-item {
+        position: relative;
+        padding-left: 0;
+        margin-bottom: 12px;
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(0, 255, 255, 0.05);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+    }
+     
+    .post-item::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.05), transparent);
+        transition: 0.5s;
+    }
+    .post-item:hover::before {
+        left: 100%;
+    }
+    .post-item:hover {
+        background: rgba(0, 255, 255, 0.04);
+        transform: translateX(12px) translateY(-2px);
+        border-color: rgba(0, 255, 255, 0.3);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 
+                    inset 4px 0 0 #00ffff;
+    }
+    .post-item:hover .post-title-link {
+        color: #fff !important;
+        text-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+        letter-spacing: 0.5px;
+    }
+    .post-item-tag {
+        font-size: 0.7rem; 
+        color: rgba(0,255,255,0.6); 
+        padding: 2px 8px; 
+        border-radius: 5px; 
+        background: rgba(0,255,255,0.03); 
+        border: 1px solid rgba(0,255,255,0.1);
+        transition: all 0.3s ease;
+    }
+    .post-item:hover .post-item-tag {
+        border-color: rgba(0,255,255,0.5);
+        background: rgba(0,255,255,0.12);
+        color: #fff;
+    }
+     
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .post-item {
+        animation: fadeInUp 0.5s ease backwards;
+    }
+    
+    .post-item:nth-child(1) { animation-delay: 0s; }
+    
+    </style>
 
     <div style="margin-top: 2rem;">
         <a href="/" class="btn github-btn">← 返回首页</a>

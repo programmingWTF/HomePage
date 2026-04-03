@@ -161,6 +161,75 @@
         
     </div>
 
+    <style>
+    .post-title-link {
+        color: #00ffff !important; 
+        font-size: 1.14rem; 
+        text-decoration: none; 
+        display: block; 
+        margin-bottom: 6px; 
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .post-item {
+        position: relative;
+        padding-left: 0;
+        margin-bottom: 12px;
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(0, 255, 255, 0.05);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+    }
+     
+    .post-item::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.05), transparent);
+        transition: 0.5s;
+    }
+    .post-item:hover::before {
+        left: 100%;
+    }
+    .post-item:hover {
+        background: rgba(0, 255, 255, 0.04);
+        transform: translateX(12px) translateY(-2px);
+        border-color: rgba(0, 255, 255, 0.3);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 
+                    inset 4px 0 0 #00ffff;
+    }
+    .post-item:hover .post-title-link {
+        color: #fff !important;
+        text-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+        letter-spacing: 0.5px;
+    }
+    .post-item-tag {
+        font-size: 0.7rem; 
+        color: rgba(0,255,255,0.6); 
+        padding: 2px 8px; 
+        border-radius: 5px; 
+        background: rgba(0,255,255,0.03); 
+        border: 1px solid rgba(0,255,255,0.1);
+        transition: all 0.3s ease;
+    }
+    .post-item:hover .post-item-tag {
+        border-color: rgba(0,255,255,0.5);
+        background: rgba(0,255,255,0.12);
+        color: #fff;
+    }
+     
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .post-item {
+        animation: fadeInUp 0.5s ease backwards;
+    }
+    
+    </style>
+
     <div style="margin-top: 2rem;">
         <a href="/" class="btn github-btn">← 返回首页</a>
     </div>
