@@ -6,8 +6,60 @@
     <title>liguiyu.tech</title>
     
     
+    <meta name="description" content="写在前面 本文旨在帮助大一上学期 “程序设计(1)” 中C语言指针与内存管理没完全理解的同学，在大一下学期的C&#43;&#43;里学会指针与内存管理
+受限于篇幅限制，本文某些时候可能会直接使用C&#43;&#43;里的一些语法，而不会使用C语言的语法，比如可能会使用new、delete而不是malloc、free
+如有任何问题或错误，欢迎使用个人主页的联系方式联系我，也可以评论留言（需登录GitHub）
+[!CAUTION] 如果大家感觉一看到这部分就害怕、头疼，没关系，作者向你承诺这篇文章绝对非常生动形象，你一定可以很轻松的看懂！
+[!NOTE] 本文为了方便大家理解，某些表述方法或比喻可能不够精确，如有建议，欢迎与我联系、讨论！
+[!TIP] 如何判断自己是否真正掌握了C语言的指针？
+看看自己能不能回答以下问题：
+定义int a[i]，a[i]与i[a]、(i&#43;1)[a-1]为什么是等价的？ 定义int a[10][20]，传入这个二维数组的时候，为什么传入int a[][20]可以，而传入int a[10][]就不可以？（需要知道具体为什么不可以） 定义int a[10][20]，a是什么类型？a[2]是什么类型？
+如果你无法回答上面的全部问题，那么说明你还没完全理解透彻！ 第一节 指针 外卖柜 想象一下，你今天中午要去拿外卖。我们如何保证你能准确的拿到自己的外卖呢？
+我们需要知道：你的外卖放在哪个格子里
+计算机中的外卖柜 好了，我们现在来类比一下
+我们如何在计算机中描述一个数据存储的位置呢？
+首先我们要知道，计算机中不同的类型占用的内存是不同的，比如，大部分情况下char占用1个字节，int4个，long long8个。很多时候，我们可能要连续使用好几个外卖柜的格子才能取到外卖
+所以我们想准确描述一个变量在计算机中的存储地址，就需要知道：
+数据从哪里开始存放 （第一个外卖在哪） 数据存了多长 （连续放了几个外卖格子） 指针到底是怎么取到外卖的 首先，我们定义一个指针
+int a; int* p = &amp;a; *p = 3; 先简单讲解一下基本语法。
+我们首先定义了一个变量a 然后定义了一个整型指针变量（int*类型）p 接着对a进行取址&amp;，把a的地址给p 最后我们对p进行解引用*，解引用就是找到这个地址对应的东西，*p = 3;也就是让p地址对应的东西（也就是a）的值变成3 [!CAUTION] 注意，int* p;和*p = 5;，这两个*p虽然长得差不多，但是有本质不同！int* p的*可以理解为是跟着前面的int的，意思是定义了一个类型是int*（整型指针类型）的变量p，而*p = 5;的*是上面提到的解引用，是找到这个地址对应的东西
+那么，指针变量p到底是怎么工作的？ 我们把计算机内存里的一个字节看作是一个小格子
+p里存放的值就是a在计算机内存里的第一个小格子的编号，也就是起始地址（一般来说作为int类型的a会占4个字节） -&gt; 对应第一个外卖格子的编号 那么，谁来记录数据的长度，也就是连续存了几个格子呢？其实这个长度信息存在了指针的类型里。int*类型的指针，它用它的类型int*隐含了“连续存了4个格子”的信息。 同样的，long long *隐含了“连续存了8个格子”的信息、char*隐含了“只存放了1个格子”的信息 好了，至此，指针的基础部分就结束了
+第二节 数组与指针 申请一块连续的空间 new与delete 可以理解为new是在贷款，delete是在还款，你不能一直贷款而从不还款 所以，new申请出来的内存一定在使用完后应该使用delete即使还清 基本语法： 申请单个类型为T的变量的内存：new T
+">
+    <meta name="keywords" content="C&#43;&#43;, C, 编程, 技术分享, NUAA, 指针, 内存管理">
+    <link rel="canonical" href="http://localhost:1313/posts/cc&#43;&#43;-%E4%B9%8B-%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+    <meta property="og:title" content="C/C&#43;&#43; 之 指针与内存管理 - liguiyu.tech">
+    <meta property="og:description" content="写在前面 本文旨在帮助大一上学期 “程序设计(1)” 中C语言指针与内存管理没完全理解的同学，在大一下学期的C&#43;&#43;里学会指针与内存管理
+受限于篇幅限制，本文某些时候可能会直接使用C&#43;&#43;里的一些语法，而不会使用C语言的语法，比如可能会使用new、delete而不是malloc、free
+如有任何问题或错误，欢迎使用个人主页的联系方式联系我，也可以评论留言（需登录GitHub）
+[!CAUTION] 如果大家感觉一看到这部分就害怕、头疼，没关系，作者向你承诺这篇文章绝对非常生动形象，你一定可以很轻松的看懂！
+[!NOTE] 本文为了方便大家理解，某些表述方法或比喻可能不够精确，如有建议，欢迎与我联系、讨论！
+[!TIP] 如何判断自己是否真正掌握了C语言的指针？
+看看自己能不能回答以下问题：
+定义int a[i]，a[i]与i[a]、(i&#43;1)[a-1]为什么是等价的？ 定义int a[10][20]，传入这个二维数组的时候，为什么传入int a[][20]可以，而传入int a[10][]就不可以？（需要知道具体为什么不可以） 定义int a[10][20]，a是什么类型？a[2]是什么类型？
+如果你无法回答上面的全部问题，那么说明你还没完全理解透彻！ 第一节 指针 外卖柜 想象一下，你今天中午要去拿外卖。我们如何保证你能准确的拿到自己的外卖呢？
+我们需要知道：你的外卖放在哪个格子里
+计算机中的外卖柜 好了，我们现在来类比一下
+我们如何在计算机中描述一个数据存储的位置呢？
+首先我们要知道，计算机中不同的类型占用的内存是不同的，比如，大部分情况下char占用1个字节，int4个，long long8个。很多时候，我们可能要连续使用好几个外卖柜的格子才能取到外卖
+所以我们想准确描述一个变量在计算机中的存储地址，就需要知道：
+数据从哪里开始存放 （第一个外卖在哪） 数据存了多长 （连续放了几个外卖格子） 指针到底是怎么取到外卖的 首先，我们定义一个指针
+int a; int* p = &amp;a; *p = 3; 先简单讲解一下基本语法。
+我们首先定义了一个变量a 然后定义了一个整型指针变量（int*类型）p 接着对a进行取址&amp;，把a的地址给p 最后我们对p进行解引用*，解引用就是找到这个地址对应的东西，*p = 3;也就是让p地址对应的东西（也就是a）的值变成3 [!CAUTION] 注意，int* p;和*p = 5;，这两个*p虽然长得差不多，但是有本质不同！int* p的*可以理解为是跟着前面的int的，意思是定义了一个类型是int*（整型指针类型）的变量p，而*p = 5;的*是上面提到的解引用，是找到这个地址对应的东西
+那么，指针变量p到底是怎么工作的？ 我们把计算机内存里的一个字节看作是一个小格子
+p里存放的值就是a在计算机内存里的第一个小格子的编号，也就是起始地址（一般来说作为int类型的a会占4个字节） -&gt; 对应第一个外卖格子的编号 那么，谁来记录数据的长度，也就是连续存了几个格子呢？其实这个长度信息存在了指针的类型里。int*类型的指针，它用它的类型int*隐含了“连续存了4个格子”的信息。 同样的，long long *隐含了“连续存了8个格子”的信息、char*隐含了“只存放了1个格子”的信息 好了，至此，指针的基础部分就结束了
+第二节 数组与指针 申请一块连续的空间 new与delete 可以理解为new是在贷款，delete是在还款，你不能一直贷款而从不还款 所以，new申请出来的内存一定在使用完后应该使用delete即使还清 基本语法： 申请单个类型为T的变量的内存：new T
+">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://localhost:1313/posts/cc&#43;&#43;-%E4%B9%8B-%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+    
     <link rel="stylesheet" href="/css/main.min.4f61affe9b1344bbff0a1cb8c7dc031167632d0c46ce64328c442861d5f09d89.css">
     
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
@@ -92,7 +144,7 @@
         </li>
       </ul>
     </li>
-    <li><a href="#数组与指针">数组与指针</a>
+    <li><a href="#第二节-数组与指针">第二节 数组与指针</a>
       <ul>
         <li><a href="#申请一块连续的空间">申请一块连续的空间</a>
           <ul>
@@ -101,7 +153,7 @@
                 <li><a href="#基本语法">基本语法：</a></li>
               </ul>
             </li>
-            <li><a href="#数组与指针-1">数组与指针</a></li>
+            <li><a href="#数组与指针">数组与指针</a></li>
           </ul>
         </li>
         <li><a href="#指针的与-">指针的+与-</a></li>
@@ -130,7 +182,11 @@
           </ul>
         </li>
         <li><a href="#避免野指针">避免“野指针”！</a></li>
-        <li><a href="#扩展内容">扩展内容</a>
+      </ul>
+    </li>
+    <li><a href="#扩展内容">扩展内容</a>
+      <ul>
+        <li>
           <ul>
             <li><a href="#1-null与nullptr">1. NULL与nullptr</a></li>
             <li><a href="#2-const-与--的纠缠">2. const 与 * 的纠缠</a>
@@ -195,9 +251,15 @@
     </div>
 
     <div class="post-meta" style="color: #9ca3af; margin: 1rem 0 3rem 0; font-size: 0.9rem; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+        
+        <span>👤 作者: liguiyu</span>
+        <span style="color: rgba(255,255,255,0.2);">|</span>
+        
         <span>📅 首次发布: 2026-04-02</span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
         <span>🔄 最近更新: 2026-04-02</span>
+        <span style="color: rgba(255,255,255,0.2);">|</span>
+        <span id="busuanzi_container_page_pv" style="display:none;">👀 阅读量: <span id="busuanzi_value_page_pv"></span> 次</span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
         
         
@@ -205,7 +267,7 @@
             
         
         
-        <span>⏱️ 预计阅读: 16 分钟 (约 567 字)</span>
+        <span>⏱️ 预计阅读: 16 分钟 (约 568 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
@@ -272,7 +334,7 @@
 <li>同样的，<code>long long *</code>隐含了“连续存了8个格子”的信息、<code>char*</code>隐含了“只存放了1个格子”的信息</li>
 </ul>
 <p><em>好了，至此，指针的基础部分就结束了</em></p>
-<h1 id="数组与指针">数组与指针</h1>
+<h1 id="第二节-数组与指针">第二节 数组与指针</h1>
 <h2 id="申请一块连续的空间">申请一块连续的空间</h2>
 <h3 id="new与delete">new与delete</h3>
 <ul>
@@ -294,7 +356,7 @@
 <p>删除指针变量<code>p</code>指向的一片连续内存：<code>delete[] p</code></p>
 </li>
 </ul>
-<h3 id="数组与指针-1">数组与指针</h3>
+<h3 id="数组与指针">数组与指针</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a[<span style="color:#ae81ff">100</span>];
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> p;
@@ -454,7 +516,7 @@
 <p><strong>定义了一个指针，不初始化就访问是绝对禁止的</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>p;   <span style="color:#75715e">// 危险！这是野指针，它指向的地址是随机的
 </span></span></span><span style="display:flex;"><span><span style="color:#f92672">*</span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>; <span style="color:#75715e">// 极大概率导致程序崩溃（Segmentation Fault）
-</span></span></span></code></pre></div><h2 id="扩展内容">扩展内容</h2>
+</span></span></span></code></pre></div><h1 id="扩展内容">扩展内容</h1>
 <h3 id="1-null与nullptr">1. NULL与nullptr</h3>
 <p>在老版本的 C/C++ 中，我们习惯用 <code>NULL</code> 来表示“空指针”。但本质上，<code>NULL</code> 只是一个被强转为指针的 <strong>0</strong>。</p>
 <ul>

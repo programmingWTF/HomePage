@@ -46,26 +46,100 @@
             <div class="post-item" 
                  data-tags="{{ delimit (apply .Params.tags "lower" ".") " " }}"
                  data-content="{{ .Summary | plainify | lower | htmlEscape }}">
-                <a href="{{ .RelPermalink }}" style="color: #00ffff; font-size: 1.1rem; text-decoration: none; display: block; margin-bottom: 6px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#00ffff'">
+                <a href="{{ .RelPermalink }}" class="post-title-link">
                     {{ .Title | default "未命名文章" }}
                 </a>
-                {{ $words := .WordCount }}
-                {{ $readTime := (div $words 200) }}
-                {{ if gt (len (findRE "```" .RawContent)) 0 }}
-                    {{ $readTime = (add $readTime (mul (len (findRE "```" .RawContent)) 1)) }}
-                {{ end }}
-                {{ if lt $readTime 1 }}
-                    {{ $readTime = 1 }}
-                {{ end }}
-                <span style="color: #9ca3af; font-size: 0.8rem;">📅 首次发布：{{ .Date.Format "2006-01-02" }} | 🔄 最近更新：{{ .Lastmod.Format "2006-01-02" }} | ⏱️ 预计阅读：{{ $readTime }} 分钟</span>
-                <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 2px;">
+                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px;">
+                    {{ with .Params.author }}<span>👤 {{ . }}</span> &nbsp;&nbsp; {{ end }}
+                    {{ $words := .WordCount }}
+                    {{ $readTime := (div $words 200) }}
+                    {{ if gt (len (findRE "```" .RawContent)) 0 }}
+                        {{ $readTime = (add $readTime (mul (len (findRE "```" .RawContent)) 1)) }}
+                    {{ end }}
+                    {{ if lt $readTime 1 }}
+                        {{ $readTime = 1 }}
+                    {{ end }}
+                    <span>📅 {{ .Date.Format "2006-01-02" }} | ⏱️ {{ $readTime }} 分钟</span>
+                </div>
+                <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2px;">
                     {{ range .Params.tags }}
-                    <span style="font-size: 0.7rem; color: rgba(0,255,255,0.6); padding: 2px 8px; border-radius: 12px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.1);">#{{ . }}</span>
+                    <span class="post-item-tag">#{{ . }}</span>
                     {{ end }}
                 </div>
             </div>
         {{ end }}
     </div>
+
+    <style>
+    .post-title-link {
+        color: #00ffff !important; 
+        font-size: 1.14rem; 
+        text-decoration: none; 
+        display: block; 
+        margin-bottom: 6px; 
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .post-item {
+        position: relative;
+        padding-left: 0;
+        margin-bottom: 12px;
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(0, 255, 255, 0.05);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+    }
+    /* 装饰用光晕背景 */
+    .post-item::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.05), transparent);
+        transition: 0.5s;
+    }
+    .post-item:hover::before {
+        left: 100%;
+    }
+    .post-item:hover {
+        background: rgba(0, 255, 255, 0.04);
+        transform: translateX(12px) translateY(-2px);
+        border-color: rgba(0, 255, 255, 0.3);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 
+                    inset 4px 0 0 #00ffff;
+    }
+    .post-item:hover .post-title-link {
+        color: #fff !important;
+        text-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+        letter-spacing: 0.5px;
+    }
+    .post-item-tag {
+        font-size: 0.7rem; 
+        color: rgba(0,255,255,0.6); 
+        padding: 2px 8px; 
+        border-radius: 5px; 
+        background: rgba(0,255,255,0.03); 
+        border: 1px solid rgba(0,255,255,0.1);
+        transition: all 0.3s ease;
+    }
+    .post-item:hover .post-item-tag {
+        border-color: rgba(0,255,255,0.5);
+        background: rgba(0,255,255,0.12);
+        color: #fff;
+    }
+    /* 进入动画 */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .post-item {
+        animation: fadeInUp 0.5s ease backwards;
+    }
+    {{ range $index, $element := .Pages }}
+    .post-item:nth-child({{ add $index 1 }}) { animation-delay: {{ mul $index 0.05 }}s; }
+    {{ end }}
+    </style>
 
     <div style="margin-top: 2rem;">
         <a href="/" class="btn github-btn">← 返回首页</a>

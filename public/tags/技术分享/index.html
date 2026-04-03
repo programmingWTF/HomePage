@@ -6,8 +6,20 @@
     <title>liguiyu.tech</title>
     
     
+    <meta name="description" content="寻找队友？如果你有任何计算机竞赛或有趣的项目邀约，欢迎随时联系。">
+    <meta name="keywords" content="">
+    <link rel="canonical" href="http://localhost:1313/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/">
+    <meta property="og:title" content="技术分享 - liguiyu.tech">
+    <meta property="og:description" content="寻找队友？如果你有任何计算机竞赛或有趣的项目邀约，欢迎随时联系。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:1313/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/">
+
+    
     <link rel="stylesheet" href="/css/main.min.4f61affe9b1344bbff0a1cb8c7dc031167632d0c46ce64328c442861d5f09d89.css">
     
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
@@ -168,7 +180,7 @@ int a; int* p = &amp;amp;amp;a; *p = 3; 先简单讲解一下基本语法。
 我们首先定义了一个变量a 然后定义了一个整型指针变量（int*类型）p 接着对a进行取址&amp;amp;amp;，把a的地址给p 最后我们对p进行解引用*，解引用就是找到这个地址对应的东西，*p = 3;也就是让p地址对应的东西（也就是a）的值变成3 [!caution] 注意，int* p;和*p = 5;，这两个*p虽然长得差不多，但是有本质不同！int* p的*可以理解为是跟着前面的int的，意思是定义了一个类型是int*（整型指针类型）的变量p，而*p = 5;的*是上面提到的解引用，是找到这个地址对应的东西
 那么，指针变量p到底是怎么工作的？ 我们把计算机内存里的一个字节看作是一个小格子
 p里存放的值就是a在计算机内存里的第一个小格子的编号，也就是起始地址（一般来说作为int类型的a会占4个字节） -&amp;amp;gt; 对应第一个外卖格子的编号 那么，谁来记录数据的长度，也就是连续存了几个格子呢？其实这个长度信息存在了指针的类型里。int*类型的指针，它用它的类型int*隐含了“连续存了4个格子”的信息。 同样的，long long *隐含了“连续存了8个格子”的信息、char*隐含了“只存放了1个格子”的信息 好了，至此，指针的基础部分就结束了
-数组与指针 申请一块连续的空间 new与delete 可以理解为new是在贷款，delete是在还款，你不能一直贷款而从不还款 所以，new申请出来的内存一定在使用完后应该使用delete即使还清 基本语法： 申请单个类型为t的变量的内存：new t
+第二节 数组与指针 申请一块连续的空间 new与delete 可以理解为new是在贷款，delete是在还款，你不能一直贷款而从不还款 所以，new申请出来的内存一定在使用完后应该使用delete即使还清 基本语法： 申请单个类型为t的变量的内存：new t
 ">
                 <a href="/posts/cc&#43;&#43;-%E4%B9%8B-%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="color: #00ffff; font-size: 1.1rem; text-decoration: none; display: block; margin-bottom: 6px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#00ffff'">
                     C/C&#43;&#43; 之 指针与内存管理
