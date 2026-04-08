@@ -50,15 +50,30 @@
                     {{ .Title | default "未命名文章" }}
                 </a>
                 <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
-                    {{ with .Params.author }}<span>👤 {{ . }}</span>{{ end }}
+                    {{ with .Params.author }}
+                    <span style="display: flex; gap: 6px;">
+                        {{ $authors := split . "&" }}
+                        {{ range $index, $author := $authors }}
+                            {{ $author = trim $author " " }}
+                            {{ if eq $index 0 }}
+                                <span style="color: #00ffff; border: 1px solid rgba(0, 255, 255, 0.3); padding: 0 6px; border-radius: 4px; background: rgba(0, 255, 255, 0.05); font-size: 0.75rem;">
+                                    👤 第一作者: {{ $author }}
+                                </span>
+                            {{ else }}
+                                <span style="color: #ff00ff; border: 1px solid rgba(255, 0, 255, 0.2); padding: 0 6px; border-radius: 4px; background: rgba(255, 0, 255, 0.05); font-size: 0.75rem;">
+                                    协助作者: {{ $author }}
+                                </span>
+                            {{ end }}
+                        {{ end }}
+                    </span>
+                    {{ end }}
                     {{ $words := .WordCount }}
-                    {{ $readTime := (div $words 200) }}
-                    {{ if gt (len (findRE "```" .RawContent)) 0 }}
-                        {{ $readTime = (add $readTime (mul (len (findRE "```" .RawContent)) 1)) }}
-                    {{ end }}
-                    {{ if lt $readTime 1 }}
-                        {{ $readTime = 1 }}
-                    {{ end }}
+                    {{ $rawContent := .RawContent }}
+                    {{ $codeBlockCount := len (findRE "```" $rawContent) }}
+                    {{ $baseTime := (div $words 200) }}
+                    {{ if lt $baseTime 1 }}{{ $baseTime = 1 }}{{ end }}
+                    {{ $extraCodeTime := (mul $codeBlockCount 1) }}
+                    {{ $readTime := (add $baseTime $extraCodeTime) }}
                     <span>⏱️ {{ $readTime }} 分钟</span>
                     <span>🔄 {{ .Lastmod.Format "2006-01-02" }}</span>
                     <span class="busuanzi_container_page_pv" style="display:none;">👀 <span class="busuanzi_value_page_pv"></span>次</span>

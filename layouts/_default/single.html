@@ -42,7 +42,22 @@
 
     <div class="post-meta" style="color: #9ca3af; margin: 1rem 0 3rem 0; font-size: 0.9rem; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
         {{ with .Params.author }}
-        <span>👤 作者: {{ . }}</span>
+        <span class="authors-list" style="display: flex; align-items: center; gap: 8px;">
+            {{ $authors := split . "&" }}
+            {{ range $index, $author := $authors }}
+                {{ $author = trim $author " " }}
+                {{ if eq $index 0 }}
+                    <span style="background: rgba(0, 255, 255, 0.1); color: #00ffff; padding: 2px 10px; border-radius: 12px; border: 1px solid rgba(0, 255, 255, 0.3); display: flex; align-items: center; gap: 4px;">
+                        <span style="font-size: 0.75rem; opacity: 0.8;">第一作者:</span> {{ $author }}
+                    </span>
+                {{ else }}
+                    <span style="color: rgba(255,255,255,0.2); font-weight: bold;">&</span>
+                    <span style="background: rgba(255, 0, 255, 0.05); color: #ff00ff; padding: 2px 10px; border-radius: 12px; border: 1px solid rgba(255, 0, 255, 0.2); display: flex; align-items: center; gap: 4px;">
+                        <span style="font-size: 0.75rem; opacity: 0.8;">协助作者:</span> {{ $author }}
+                    </span>
+                {{ end }}
+            {{ end }}
+        </span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
         {{ end }}
         <span>📅 首次发布: {{ .Date.Format "2006-01-02" }}</span>
@@ -52,14 +67,20 @@
         <span id="busuanzi_container_page_pv" style="display:none;">👀 阅读量: <span id="busuanzi_value_page_pv"></span> 次</span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
         {{ $words := .WordCount }}
-        {{ $readTime := (div $words 200) }}
-        {{ if gt (len (findRE "```" .RawContent)) 0 }}
-            {{ $readTime = (add $readTime (mul (len (findRE "```" .RawContent)) 1)) }}
-        {{ end }}
-        {{ if lt $readTime 1 }}
-            {{ $readTime = 1 }}
-        {{ end }}
-        <span>⏱️ 预计阅读: {{ $readTime }} 分钟 (约 {{ $words }} 字)</span>
+        {{ $rawContent := .RawContent }}
+        {{/* 更加精细的阅读时间逻辑 */}}
+        {{/* 中文字符多占时间，代码块内容也需要时间消化 */}}
+        {{ $codeBlockCount := len (findRE "```" $rawContent) }}
+        {{ $imageCount := len (findRE `!\[` $rawContent) }}
+        {{/* 基础字数时间：约200字/分钟(技术类) */}}
+        {{ $baseTime := (div $words 200) }}
+        {{ if lt $baseTime 1 }}{{ $baseTime = 1 }}{{ end }}
+        {{/* 代码块额外时间：每个代码块增加1-2分钟思考时间 */}}
+        {{ $extraCodeTime := (mul $codeBlockCount 1) }}
+        {{/* 图片额外时间：每张图阅读10秒 */}}
+        {{ $extraImageTime := (div (mul $imageCount 10) 60) }}
+        {{ $totalReadTime := (add $baseTime (add $extraCodeTime $extraImageTime)) }}
+        <span>⏱️ 预计阅读: {{ $totalReadTime }} 分钟 (约 {{ $words }} 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
