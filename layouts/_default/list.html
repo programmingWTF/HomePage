@@ -4,11 +4,11 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     transform: translateY(0);
-    max-height: 150px; /* 足够展示高度 */
+    max-height: 120px; /* 减小最大高度 */
     overflow: hidden;
-    margin-bottom: 12px; 
+    margin-bottom: 8px; /* 减小外边距 */
     border-bottom: 1px solid rgba(0,255,255,0.1); 
-    padding-bottom: 8px; 
+    padding-bottom: 6px; /* 减小内边距 */
     display: block;
 }
 .post-item.hidden-post {
@@ -22,9 +22,9 @@
     pointer-events: none; /* 彻底禁用可被点击区域 */
 }
 </style>
-<div id="overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto;">
+    <div id="overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 95%; max-width: 900px; max-height: 95vh; overflow-y: auto;">
     
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
         <h1 style="margin: 0;">文章列表</h1>
         <button id="toggle-tags-btn" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); color: #00ffff; border-radius: 20px; padding: 4px 12px; cursor: pointer; font-size: 0.8rem; transition: all 0.3s;">
             收起标签 🔼
@@ -37,7 +37,7 @@
                style="width: 100%; padding: 12px 20px; border-radius: 30px; border: 1px solid rgba(0, 255, 255, 0.3); background: rgba(10, 10, 10, 0.6); color: #fff; font-size: 1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px); transition: all 0.3s; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
     </div>
     
-    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; max-height: 500px; opacity: 1;">
+    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; max-height: 500px; opacity: 1;">
         {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
             <div class="tag-combo active" data-tag="{{ $name | lower }}" style="cursor: pointer;">
                 <span class="t-name">{{ $name }}</span>
@@ -46,7 +46,7 @@
         {{ end }}
     </div>
 
-    <div class="posts-container" id="posts-list" style="max-height: 55vh; overflow-y: auto; padding: 0.5rem 1rem; text-align: left; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+    <div class="posts-container" id="posts-list" style="max-height: 65vh; overflow-y: auto; padding: 0.5rem 1rem; text-align: left; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
         {{ range .Pages }}
             <div class="post-item" 
                  data-tags="{{ delimit (apply .Params.tags "lower" ".") " " }}"
@@ -74,11 +74,20 @@
                     {{ end }}
                     {{ $words := .WordCount }}
                     {{ $rawContent := .RawContent }}
+                    {{/* 统计中文字符、英文字母、代码块和图片 */}}
+                    {{ $zhCount := len (findRE "[\u4e00-\u9fa5]" $rawContent) }}
+                    {{ $enCount := len (findRE "[a-zA-Z]" $rawContent) }}
                     {{ $codeBlockCount := len (findRE "```" $rawContent) }}
-                    {{ $baseTime := (div $words 200) }}
-                    {{ if lt $baseTime 1 }}{{ $baseTime = 1 }}{{ end }}
-                    {{ $extraCodeTime := (mul $codeBlockCount 1) }}
-                    {{ $readTime := (add $baseTime $extraCodeTime) }}
+                    {{ $imageCount := len (findRE `!\[` $rawContent) }}
+                    
+                    {{/* 阅读速率：中文300字/分，英文150词/分，代码块和图片增加阅读负担 */}}
+                    {{ $zhTime := (div $zhCount 300.0) }}
+                    {{ $enTime := (div $enCount 150.0) }}
+                    {{ $extraTime := (add (mul $codeBlockCount 0.5) (mul $imageCount 0.2)) }}
+                    
+                    {{ $readTimeRaw := (add $zhTime (add $enTime $extraTime)) }}
+                    {{ $readTime := (math.Max 1 (math.Ceil $readTimeRaw)) }}
+                    
                     <span>⏱️ {{ $readTime }} 分钟</span>
                     <span>🔄 {{ .Lastmod.Format "2006-01-02" }}</span>
                     <span class="busuanzi_container_page_pv" style="display:none;">👀 <span class="busuanzi_value_page_pv"></span>次</span>
@@ -104,8 +113,8 @@
     .post-item {
         position: relative;
         padding-left: 0;
-        margin-bottom: 12px;
-        padding: 15px;
+        margin-bottom: 8px;
+        padding: 10px 15px;
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(0, 255, 255, 0.05);
@@ -192,19 +201,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let tagsCollapsed = false;
     toggleTagsBtn.addEventListener('click', function() {
         tagsCollapsed = !tagsCollapsed;
-        if (tagsCollapsed) {
-            filterTagsContainer.style.maxHeight = '0px';
-            filterTagsContainer.style.opacity = '0';
-            filterTagsContainer.style.marginBottom = '0px';
-            postsListContainer.style.maxHeight = '75vh'; // 增加文章列表高度
-            toggleTagsBtn.innerHTML = '选择具体标签 🔽';
-        } else {
-            filterTagsContainer.style.maxHeight = '500px';
-            filterTagsContainer.style.opacity = '1';
-            filterTagsContainer.style.marginBottom = '2rem';
-            postsListContainer.style.maxHeight = '55vh';
-            toggleTagsBtn.innerHTML = '收起标签 🔼';
-        }
+            if (tagsCollapsed) {
+                filterTagsContainer.style.maxHeight = '0px';
+                filterTagsContainer.style.opacity = '0';
+                filterTagsContainer.style.marginBottom = '0px';
+                postsListContainer.style.maxHeight = '82vh'; // 增加文章列表高度
+                toggleTagsBtn.innerHTML = '选择具体标签 🔽';
+            } else {
+                filterTagsContainer.style.maxHeight = '500px';
+                filterTagsContainer.style.opacity = '1';
+                filterTagsContainer.style.marginBottom = '1rem';
+                postsListContainer.style.maxHeight = '65vh';
+                toggleTagsBtn.innerHTML = '收起标签 🔼';
+            }
     });
 
     function updatePosts() {

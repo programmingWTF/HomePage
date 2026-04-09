@@ -66,21 +66,24 @@
         <span style="color: rgba(255,255,255,0.2);">|</span>
         <span id="busuanzi_container_page_pv" style="display:none;">👀 阅读量: <span id="busuanzi_value_page_pv"></span> 次</span>
         <span style="color: rgba(255,255,255,0.2);">|</span>
-        {{ $words := .WordCount }}
         {{ $rawContent := .RawContent }}
         {{/* 更加精细的阅读时间逻辑 */}}
-        {{/* 中文字符多占时间，代码块内容也需要时间消化 */}}
+        {{ $zhCount := len (findRE "[\u4e00-\u9fa5]" $rawContent) }}
+        {{ $enCount := len (findRE "[a-zA-Z]" $rawContent) }}
         {{ $codeBlockCount := len (findRE "```" $rawContent) }}
         {{ $imageCount := len (findRE `!\[` $rawContent) }}
-        {{/* 基础字数时间：约200字/分钟(技术类) */}}
-        {{ $baseTime := (div $words 200) }}
-        {{ if lt $baseTime 1 }}{{ $baseTime = 1 }}{{ end }}
-        {{/* 代码块额外时间：每个代码块增加1-2分钟思考时间 */}}
-        {{ $extraCodeTime := (mul $codeBlockCount 1) }}
-        {{/* 图片额外时间：每张图阅读10秒 */}}
-        {{ $extraImageTime := (div (mul $imageCount 10) 60) }}
-        {{ $totalReadTime := (add $baseTime (add $extraCodeTime $extraImageTime)) }}
-        <span>⏱️ 预计阅读: {{ $totalReadTime }} 分钟 (约 {{ $words }} 字)</span>
+        
+        {{/* 阅读速率：中文300字/分，英文150词/分，代码块0.5分/个，图片0.2分/张 */}}
+        {{ $zhTime := (div $zhCount 300.0) }}
+        {{ $enTime := (div $enCount 150.0) }}
+        {{ $extraTime := (add (mul $codeBlockCount 0.5) (mul $imageCount 0.2)) }}
+        
+        {{ $totalReadTimeRaw := (add $zhTime (add $enTime $extraTime)) }}
+        {{ $totalReadTime := (math.Max 1 (math.Ceil $totalReadTimeRaw)) }}
+        
+        {{/* 总字数：中文字符数 + 英文单词数约为总统计量 */}}
+        {{ $totalCharWords := (add $zhCount (div $enCount 5)) }}
+        <span>⏱️ 预计阅读: {{ $totalReadTime }} 分钟 (约 {{ $totalCharWords }} 字)</span>
     </div>
     
     <article class="markdown-content" style="line-height: 1.8; color: #d1d5db;">
