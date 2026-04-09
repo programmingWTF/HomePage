@@ -24,7 +24,12 @@
 </style>
 <div id="overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto;">
     
-    <h1 style="margin-bottom: 1rem;">文章列表</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h1 style="margin: 0;">文章列表</h1>
+        <button id="toggle-tags-btn" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); color: #00ffff; border-radius: 20px; padding: 4px 12px; cursor: pointer; font-size: 0.8rem; transition: all 0.3s;">
+            收起标签 🔼
+        </button>
+    </div>
     
     <!-- 搜索框 -->
     <div style="margin-bottom: 1.5rem; position: relative;">
@@ -32,7 +37,7 @@
                style="width: 100%; padding: 12px 20px; border-radius: 30px; border: 1px solid rgba(0, 255, 255, 0.3); background: rgba(10, 10, 10, 0.6); color: #fff; font-size: 1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px); transition: all 0.3s; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
     </div>
     
-    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; max-height: 500px; opacity: 1;">
         {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
             <div class="tag-combo active" data-tag="{{ $name | lower }}" style="cursor: pointer;">
                 <span class="t-name">{{ $name }}</span>
@@ -41,7 +46,7 @@
         {{ end }}
     </div>
 
-    <div class="posts-container" id="posts-list" style="max-height: 55vh; overflow-y: auto; padding: 0.5rem 1rem; text-align: left;">
+    <div class="posts-container" id="posts-list" style="max-height: 55vh; overflow-y: auto; padding: 0.5rem 1rem; text-align: left; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
         {{ range .Pages }}
             <div class="post-item" 
                  data-tags="{{ delimit (apply .Params.tags "lower" ".") " " }}"
@@ -179,6 +184,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const tags = document.querySelectorAll('#filter-tags .tag-combo');
     const posts = document.querySelectorAll('#posts-list .post-item');
+    const toggleTagsBtn = document.getElementById('toggle-tags-btn');
+    const filterTagsContainer = document.getElementById('filter-tags');
+    const postsListContainer = document.getElementById('posts-list');
+
+    // 切换标签展开/收起
+    let tagsCollapsed = false;
+    toggleTagsBtn.addEventListener('click', function() {
+        tagsCollapsed = !tagsCollapsed;
+        if (tagsCollapsed) {
+            filterTagsContainer.style.maxHeight = '0px';
+            filterTagsContainer.style.opacity = '0';
+            filterTagsContainer.style.marginBottom = '0px';
+            postsListContainer.style.maxHeight = '75vh'; // 增加文章列表高度
+            toggleTagsBtn.innerHTML = '选择具体标签 🔽';
+        } else {
+            filterTagsContainer.style.maxHeight = '500px';
+            filterTagsContainer.style.opacity = '1';
+            filterTagsContainer.style.marginBottom = '2rem';
+            postsListContainer.style.maxHeight = '55vh';
+            toggleTagsBtn.innerHTML = '收起标签 🔼';
+        }
+    });
 
     function updatePosts() {
         const activeTags = Array.from(document.querySelectorAll('#filter-tags .tag-combo.active'))
