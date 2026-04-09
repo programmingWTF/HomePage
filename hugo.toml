@@ -2,6 +2,7 @@ baseURL = "https://liguiyu.tech/"
 canonifyURLs = true
 languageCode = "zh-cn"
 title = "liguiyu.tech"
+buildFuture = true
 
 [params]
     subtitle = "桂鱼的个人主页"

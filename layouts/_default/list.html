@@ -50,6 +50,7 @@
         {{ range .Pages }}
             <div class="post-item" 
                  data-tags="{{ delimit (apply .Params.tags "lower" ".") " " }}"
+                 data-title="{{ .Title | lower }}"
                  data-content="{{ .Summary | plainify | lower | htmlEscape }}">
                 <a href="{{ .RelPermalink }}" class="post-title-link">
                     {{ .Title | default "未命名文章" }}
@@ -236,9 +237,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // 检查搜索匹配
             let matchSearch = true;
             if (searchQuery.length > 0) {
-                // 获取当前 post 的全部文字 (包括隐藏的 data 属性值)
-                // 这里利用 data-title 和 data-summary，如果没有就回退到 innerText
-                const textTarget = (post.dataset.content || '') + ' ' + post.innerText;
+                // 获取当前 post 的全部文字 (包括标题、内容、及显示出的文本)
+                const textTarget = (post.dataset.title || '') + ' ' + (post.dataset.content || '') + ' ' + post.innerText;
                 if (!textTarget.toLowerCase().includes(searchQuery)) {
                     matchSearch = false;
                 }
