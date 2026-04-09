@@ -27,8 +27,9 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; position: relative; z-index: 100;">
         <h1 style="margin: 0;">文章列表</h1>
         <div style="position: relative;">
-            <button id="toggle-tags-btn" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); color: #00ffff; border-radius: 20px; padding: 6px 15px; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 6px;">
+            <button id="toggle-tags-btn" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); color: #00ffff; border-radius: 20px; padding: 6px 15px; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 6px; position: relative;">
                 🏷️ 标签筛选 <span id="tag-dropdown-arrow" style="font-size: 0.7rem; transition: transform 0.3s;">▼</span>
+                <span id="active-tag-count" style="position: absolute; top: -5px; right: -5px; background: #00ffff; color: #000; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; font-weight: bold; display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; pointer-events: none;">0</span>
             </button>
             <div id="filter-tags" class="tag-cloud-container filterable" style="position: absolute; right: 0; top: calc(100% + 10px); width: 320px; max-height: 300px; overflow-y: auto; background: rgba(20, 20, 25, 0.95); border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 12px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(15px); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; z-index: 999;">
                 {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
@@ -137,6 +138,10 @@
     </div>
 
     <style>
+    html, body {
+        overflow: hidden; /* 彻底禁止因为边缘像素超出导致的全局微小滚动 */
+        height: 100%;
+    }
     .post-title-link {
         color: #00ffff !important; 
         font-size: 1.14rem; 
@@ -259,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleTagsBtn = document.getElementById('toggle-tags-btn');
     const filterTagsContainer = document.getElementById('filter-tags');
     const arrow = document.getElementById('tag-dropdown-arrow');
+    const activeTagCountBadge = document.getElementById('active-tag-count');
 
     // 切换标签展开/收起 (下拉列表)
     let dropdownOpen = false;
@@ -293,6 +299,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const activeTags = Array.from(document.querySelectorAll('#filter-tags .tag-combo.active'))
                                .map(t => t.dataset.tag);
         const searchQuery = searchInput.value.toLowerCase().trim();
+
+        // 更新徽章数字
+        if (activeTagCountBadge) {
+            if (activeTags.length > 0) {
+                activeTagCountBadge.innerText = activeTags.length;
+                activeTagCountBadge.style.opacity = '1';
+            } else {
+                activeTagCountBadge.style.opacity = '0';
+            }
+        }
 
         posts.forEach(post => {
             const postTags = post.dataset.tags.split(' ');
