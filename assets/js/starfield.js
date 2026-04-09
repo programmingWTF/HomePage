@@ -62,10 +62,10 @@ const animate = () => {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
 
-    clickBurst *= 0.92;
+    clickBurst *= 0.96; // 原为0.94，调大这个值（接近1）可以让飞速状态持续更久
     // 基础流动速度为负（离人而去），点击爆发速度为正（扑面而来）
-    const speedCyan = -0.005 + clickBurst * 0.2; 
-    const speedMagenta = -0.006 + clickBurst * 0.24;
+    const speedCyan = -0.005 + clickBurst * 0.2; // 原为 0.08，调大这个值可以飞得更快
+    const speedMagenta = -0.006 + clickBurst * 0.3; // 原为 0.1，调大这个值可以飞得更快
     
     // 更新粒子坐标以确保均匀分布（双向包裹）
     function updateParticles(particles, speed) {
