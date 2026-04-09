@@ -37,7 +37,7 @@
                style="width: 100%; padding: 12px 20px; border-radius: 30px; border: 1px solid rgba(0, 255, 255, 0.3); background: rgba(10, 10, 10, 0.6); color: #fff; font-size: 1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px); transition: all 0.3s; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
     </div>
     
-    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; max-height: 500px; opacity: 1;">
+    <div class="tag-cloud-container filterable" id="filter-tags" style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; max-height: 120px; opacity: 1; padding: 5px;">
         {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
             <div class="tag-combo active" data-tag="{{ $name | lower }}" style="cursor: pointer;">
                 <span class="t-name">{{ $name }}</span>
@@ -48,27 +48,60 @@
 
     <div class="posts-container" id="posts-list" style="max-height: 65vh; overflow-y: auto; padding: 0.5rem 1rem; text-align: left; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
         {{ range .Pages }}
-            <div class="post-item" 
+            {{ $isLobsterAuthor1 := false }}
+            {{ $isLobsterAuthor2 := false }}
+            {{ with .Params.author }}
+                {{ $authors := split . "&" }}
+                {{ range $index, $author := $authors }}
+                    {{ $author = trim $author " " }}
+                    {{ if eq $author "桂鱼养的龙虾🦞" }}
+                        {{ if eq $index 0 }}{{ $isLobsterAuthor1 = true }}{{ else }}{{ $isLobsterAuthor2 = true }}{{ end }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+            
+            {{ $itemClass := "post-item-normal" }}
+            {{ if $isLobsterAuthor1 }}
+                {{ $itemClass = "post-item-lobster-primary" }}
+            {{ else if $isLobsterAuthor2 }}
+                {{ $itemClass = "post-item-lobster-assist" }}
+            {{ end }}
+
+            <div class="post-item {{ $itemClass }}" 
                  data-tags="{{ delimit (apply .Params.tags "lower" ".") " " }}"
                  data-title="{{ .Title | lower }}"
                  data-content="{{ .Summary | plainify | lower | htmlEscape }}">
                 <a href="{{ .RelPermalink }}" class="post-title-link">
                     {{ .Title | default "未命名文章" }}
                 </a>
-                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                <div class="post-meta-container" style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
                     {{ with .Params.author }}
-                    <span style="display: flex; gap: 6px;">
+                    <span style="display: flex; gap: 6px; flex-wrap: wrap;">
                         {{ $authors := split . "&" }}
                         {{ range $index, $author := $authors }}
                             {{ $author = trim $author " " }}
                             {{ if eq $index 0 }}
+                                {{/* 第一作者逻辑 */}}
+                                {{ if eq $author "桂鱼养的龙虾🦞" }}
+                                <span style="color: #ff00ff; border: 1px solid rgba(255, 0, 255, 0.4); padding: 0 6px; border-radius: 4px; background: rgba(255, 0, 255, 0.1); font-size: 0.75rem;">
+                                    👤 第一作者: {{ $author }}
+                                </span>
+                                {{ else }}
                                 <span style="color: #00ffff; border: 1px solid rgba(0, 255, 255, 0.3); padding: 0 6px; border-radius: 4px; background: rgba(0, 255, 255, 0.05); font-size: 0.75rem;">
                                     👤 第一作者: {{ $author }}
                                 </span>
+                                {{ end }}
                             {{ else }}
-                                <span style="color: #ff00ff; border: 1px solid rgba(255, 0, 255, 0.2); padding: 0 6px; border-radius: 4px; background: rgba(255, 0, 255, 0.05); font-size: 0.75rem;">
+                                {{/* 协助作者逻辑 */}}
+                                {{ if eq $author "桂鱼养的龙虾🦞" }}
+                                <span style="color: #00ff7f; border: 1px solid rgba(0, 255, 127, 0.3); padding: 0 6px; border-radius: 4px; background: rgba(0, 255, 127, 0.05); font-size: 0.75rem;">
                                     👤 协助作者: {{ $author }}
                                 </span>
+                                {{ else }}
+                                <span style="color: #00ffff; border: 1px solid rgba(0, 255, 255, 0.2); padding: 0 6px; border-radius: 4px; background: rgba(0, 255, 255, 0.05); font-size: 0.75rem;">
+                                    👤 协助作者: {{ $author }}
+                                </span>
+                                {{ end }}
                             {{ end }}
                         {{ end }}
                     </span>
@@ -122,6 +155,34 @@
         transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         overflow: hidden;
     }
+
+    /* 类别 1: 完全没有龙虾参与 - 保持原样 (青蓝色主题) */
+    .post-item-normal { }
+
+    /* 类别 2: 龙虾作为协助作者 - 翠绿色/春色主题 (表示 AI 提供生机和辅助) */
+    .post-item-lobster-assist {
+        border-color: rgba(0, 255, 127, 0.15);
+        background: rgba(0, 255, 127, 0.01);
+    }
+    .post-item-lobster-assist:hover {
+        border-color: rgba(0, 255, 127, 0.5) !important;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), inset 4px 0 0 #00ff7f !important;
+    }
+    .post-item-lobster-assist .post-title-link { color: #00ff7f !important; }
+    .post-item-lobster-assist:hover .post-title-link { text-shadow: 0 0 12px rgba(0, 255, 127, 0.8) !important; }
+
+    /* 类别 3: 龙虾作为第一作者 - 深紫色主题 */
+    .post-item-lobster-primary {
+        border-color: rgba(255, 0, 255, 0.3);
+        background: rgba(255, 0, 255, 0.03);
+    }
+    .post-item-lobster-primary:hover {
+        border-color: rgba(255, 0, 255, 0.8) !important;
+        box-shadow: 0 10px 25px rgba(255, 0, 255, 0.15), inset 4px 0 0 #ff00ff !important;
+    }
+    .post-item-lobster-primary .post-title-link { color: #ff00ff !important; font-weight: bold; }
+    .post-item-lobster-primary:hover .post-title-link { text-shadow: 0 0 15px rgba(255, 0, 255, 1) !important; }
+
     /* 装饰用光晕背景 */
     .post-item::before {
         content: '';
@@ -206,12 +267,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 filterTagsContainer.style.maxHeight = '0px';
                 filterTagsContainer.style.opacity = '0';
                 filterTagsContainer.style.marginBottom = '0px';
+                filterTagsContainer.style.padding = '0px';
                 postsListContainer.style.maxHeight = '82vh'; // 增加文章列表高度
                 toggleTagsBtn.innerHTML = '选择具体标签 🔽';
             } else {
-                filterTagsContainer.style.maxHeight = '500px';
+                filterTagsContainer.style.maxHeight = '120px';
                 filterTagsContainer.style.opacity = '1';
                 filterTagsContainer.style.marginBottom = '1rem';
+                filterTagsContainer.style.padding = '5px';
                 postsListContainer.style.maxHeight = '65vh';
                 toggleTagsBtn.innerHTML = '收起标签 🔼';
             }
